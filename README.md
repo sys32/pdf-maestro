@@ -4,7 +4,7 @@
 
 Split, merge and convert PDFs, page by page. Everything runs on your own computer: files are never uploaded, and the offline build blocks all network access.
 
-**Use it online:** https://pdf.codeart.mk (also at https://sys32.github.io/pdf-maestro/)
+**Use it online:** https://sys32.github.io/pdf-maestro/
 
 **Use it offline:** download `index.html` and open it in Chrome or Edge. It works with no internet connection.
 
