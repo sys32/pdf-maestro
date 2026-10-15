@@ -1,0 +1,13 @@
+{
+  "name": "pdf-maestro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Split, merge and convert PDFs to images, entirely in the browser and offline.",
+  "scripts": { "build": "python3 tools/build_standalone.py" },
+  "devDependencies": {
+    "pdf-lib": "1.17.1",
+    "jszip": "3.10.1",
+    "pdfjs-dist": "3.11.174",
+    "@fontsource-variable/inter": "5.1.0"
+  }
+}
