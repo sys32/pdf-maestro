@@ -15,6 +15,7 @@ Split, merge and convert PDFs, page by page. Everything runs on your own compute
 - **Images**: export pages as JPG or PNG at 72, 150 or 300 dpi
 - Preview pages full screen, select them by clicking or by range (`1-3, 7, 10-`)
 - Rotate, reorder (drag and drop), delete with undo
+- Print a single page or a whole document's included pages
 - Thumbnail and list views with adjustable thumbnail size
 - Removes hidden info (author, software, dates) from output files
 - Save to a folder you pick, or as one ZIP

@@ -183,6 +183,13 @@ button,input,select{font:inherit;color:inherit}
 .del{position:absolute;right:7px;top:calc(var(--fh) - 34px);width:28px;height:28px;border-radius:8px;border:0;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.2),0 0 0 1px var(--line);display:grid;place-items:center;cursor:pointer;opacity:0;transition:opacity .12s;color:var(--fg)}
 .del svg{width:14px;height:14px}
 .pg:hover .del,.del:focus-visible{opacity:1}
+.prt{position:absolute;left:7px;top:7px;width:28px;height:28px;border-radius:8px;border:0;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.2),0 0 0 1px var(--line);display:grid;place-items:center;cursor:pointer;opacity:0;transition:opacity .12s;color:var(--fg)}
+.prt svg{width:14px;height:14px}
+.pg:hover .prt,.prt:focus-visible{opacity:1}
+.prt:hover{color:var(--accent)}
+@media (hover:none){.prt{opacity:1}}
+.x.pr:hover{background:var(--sunken);color:var(--fg)}
+.x:disabled{opacity:.3;cursor:default;background:none}
 .del:hover{color:var(--danger);background:var(--danger-soft)}
 @media (hover:none){.del{opacity:1}}
 .chip.danger{color:var(--danger)}
@@ -201,13 +208,14 @@ button,input,select{font:inherit;color:inherit}
 .sz b{color:var(--accent);font-weight:600}
 /* list view */
 .sheets.list{grid-template-columns:minmax(0,1fr);gap:6px}
-.sheets.list .pg{grid-template-columns:30px 46px minmax(0,1fr) 32px 32px;grid-template-areas:"tick frame meta rot del";align-items:center;gap:12px;padding:6px 10px 6px 6px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.sheets.list .pg{grid-template-columns:30px 46px minmax(0,1fr) 32px 32px 32px;grid-template-areas:"tick frame meta prt rot del";align-items:center;gap:12px;padding:6px 10px 6px 6px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
 .sheets.list .pg:hover{border-color:var(--line-strong)}
 .sheets.list .frame{grid-area:frame;height:58px;padding:5px;border-radius:7px}
 .sheets.list .pg:hover .frame{box-shadow:none}
 .sheets.list .tick{grid-area:tick;position:static;justify-self:center}
 .sheets.list .rot{grid-area:rot;position:static;opacity:1;box-shadow:none;border:1px solid var(--line)}
 .sheets.list .del{grid-area:del;position:static;opacity:1;box-shadow:none;border:1px solid var(--line)}
+.sheets.list .prt{grid-area:prt;position:static;opacity:1;box-shadow:none;border:1px solid var(--line)}
 .sheets.list .pm{grid-area:meta;justify-content:flex-start;align-items:baseline;gap:12px;cursor:zoom-in;min-width:0;padding:8px 0}
 .sheets.list .num{font-size:13.5px}
 .sheets.list .num::before{content:attr(data-label)}
@@ -313,6 +321,19 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
 .v-nav svg{width:18px;height:18px}
 .v-nav.prev{left:12px}.v-nav.next{right:12px}
 @media (max-width:640px){.v-stage{padding:16px 12px 72px}.v-nav{top:auto;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:none}}
+#print-area{display:none}
+@media print{
+  body{background:#fff}
+  body > *:not(#print-area){display:none!important}
+  #print-area{display:block}
+  .pp{height:100vh;display:flex;align-items:center;justify-content:center;break-after:page;page-break-after:always;overflow:hidden}
+  .pp:last-child{break-after:auto;page-break-after:auto}
+  .pp img{max-width:100%;max-height:100%;display:block}
+  .pp.land{page:land}.pp.port{page:port}
+}
+@page{margin:6mm}
+@page land{size:landscape}
+@page port{size:portrait}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -439,6 +460,8 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
 
 <div class="mbar"><div><b id="m-n"></b><span id="m-s"></span></div><button class="btn" id="go2" disabled></button></div>
 
+<div id="print-area" aria-hidden="true"></div>
+
 <div class="toast" id="toast" role="status" hidden><span id="toast-t"></span><button id="toast-undo"></button></div>
 
 <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="v-name" hidden>
@@ -446,6 +469,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
     <div class="v-title"><b id="v-name"></b><span id="v-count"></span></div>
     <div class="v-tools">
       <button class="v-btn v-inc" id="v-inc"></button>
+      <button class="v-btn" id="v-print"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M4 5V1.8h6V5"/><rect x="1.8" y="5" width="10.4" height="4.8" rx="1"/><path d="M4 8.2h6v4H4z"/></svg><span class="lbl" id="v-print-l"></span></button>
       <button class="v-btn" id="v-del"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 3.8h9M5.6 3.8V2.6h2.8v1.2M3.6 3.8l.6 7.6a1 1 0 0 0 1 .9h3.6a1 1 0 0 0 1-.9l.6-7.6M5.9 6.2v3.8M8.1 6.2v3.8"/></svg><span class="lbl" id="v-del-l"></span></button>
       <button class="v-btn" id="v-rot"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 7A4.5 4.5 0 1 1 9.8 3.5"/><path d="M10 1.2v2.6H7.4"/></svg><span class="lbl" id="v-rot-l"></span></button>
       <button class="v-btn" id="v-zoom"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3.5 3.5"/><path id="v-zoom-plus" d="M5 7h4M7 5v4"/></svg><span class="lbl" id="v-zoom-l"></span></button>
@@ -589,6 +613,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       select:'Select', selAll:'All', selNone:'None', selOdd:'Odd', selEven:'Even', rotAll:'Rotate all', resetOR:'Reset order & rotation',
       rangePh:'Pages, e.g. 1-3, 7, 10-', rangeAria:'Select pages by number',
       gridTip:'Click a page to preview it · ✓ includes or leaves it out (Shift-click for a range) · Drag to reorder · ↻ rotates · the trash can deletes',
+      printDoc:'Print the included pages', printPage:v=>'Print page ' + v.n, vPrint:'Print', preparingPrint:v=>'Preparing ' + plural(v.n,'page') + ' for printing… ' + v.i + '/' + v.n, printFailed:v=>'Printing stopped: ' + v.msg + '.',
       delTitle:'Delete page', delAria:v=>'Delete page ' + v.n, delOff:v=>'Delete left-out (' + v.n + ')', invert:'Invert', restore:v=>'Restore ' + plural(v.n,'page'),
       toastDel:v=>(v.n===1 ? 'Page ' + v.p + ' deleted' : plural(v.n,'page') + ' deleted'), undo:'Undo', vDelete:'Delete', emptyDoc:'All pages of this document were deleted.', noPagesLeft:'No pages',
       viewAria:'Page view', viewGrid:'Thumbnails', viewList:'List', sizeAria:'Thumbnail size', pageWord:'Page ',
@@ -638,6 +663,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       select:'Избери', selAll:'Сите', selNone:'Ниедна', selOdd:'Непарни', selEven:'Парни', rotAll:'Ротирај ги сите', resetOR:'Врати редослед и ротација',
       rangePh:'Страници, пр. 1-3, 7, 10-', rangeAria:'Избери страници по број',
       gridTip:'Кликнете на страница за преглед · ✓ ја вклучува или исклучува (Shift + клик за опсег) · Повлечете за да преуредите · ↻ ротира · корпата брише',
+      printDoc:'Печати ги вклучените страници', printPage:v=>'Печати ја страницата ' + v.n, vPrint:'Печати', preparingPrint:v=>(one(v.n) ? 'Се подготвува ' : 'Се подготвуваат ') + plural(v.n,'page') + ' за печатење… ' + v.i + '/' + v.n, printFailed:v=>'Печатењето запре: ' + v.msg + '.',
       delTitle:'Избриши страница', delAria:v=>'Избриши ја страницата ' + v.n, delOff:v=>'Избриши ги исклучените (' + v.n + ')', invert:'Обратно', restore:v=>'Врати ' + plural(v.n,'page'),
       toastDel:v=>(v.n===1 ? 'Страница ' + v.p + ' е избришана' : plural(v.n,'page') + (one(v.n) ? ' е избришана' : ' се избришани')), undo:'Врати', vDelete:'Избриши', emptyDoc:'Сите страници од овој документ се избришани.', noPagesLeft:'Нема страници',
       viewAria:'Приказ на страниците', viewGrid:'Сликички', viewList:'Листа', sizeAria:'Големина на сликичките', pageWord:'Страница ',
@@ -721,6 +747,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   const selCount = () => ready().reduce((a,i)=>a+sel(i).length,0);
   const eff = p => p.rot%180 ? { w:p.h, h:p.w } : { w:p.w, h:p.h };
   const modified = it => it.pages.some((p,i)=>p.rot || (i>0 && p.src < it.pages[i-1].src));
+  const SVG_PRINT = '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M4 5V1.8h6V5"/><rect x="1.8" y="5" width="10.4" height="4.8" rx="1"/><path d="M4 8.2h6v4H4z"/></svg>';
   const SVG_TRASH = '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 3.8h9M5.6 3.8V2.6h2.8v1.2M3.6 3.8l.6 7.6a1 1 0 0 0 1 .9h3.6a1 1 0 0 0 1-.9l.6-7.6M5.9 6.2v3.8M8.1 6.2v3.8"/></svg>';
 
   /* ---------- output planning ---------- */
@@ -838,6 +865,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         head.appendChild(m);
       });
     }
+    if(!it.error){
+      const pb = document.createElement('button'); pb.className='x pr'; pb.innerHTML = SVG_PRINT; pb.title = t('printDoc'); pb.setAttribute('aria-label', t('printDoc') + ': ' + it.name);
+      pb.disabled = !sel(it).length;
+      pb.onclick = ()=> printPages(sel(it).map(p=>({ it, p })));
+      head.appendChild(pb);
+    }
     const x = document.createElement('button'); x.className='x'; x.innerHTML = SVG_X; x.title = t('remove'); x.setAttribute('aria-label', t('remove') + ': ' + it.name);
     x.onclick = ()=>{ removeItem(it); render(); };
     head.appendChild(x);
@@ -911,12 +944,15 @@ https://github.com/nodeca/pako/blob/main/LICENSE
       + '<button class="tick" aria-pressed="'+p.on+'"><i>'+SVG_TICK+'</i></button>'
       + '<button class="rot">'+SVG_ROT+'</button>'
       + '<button class="del">'+SVG_TRASH+'</button>'
+      + '<button class="prt">'+SVG_PRINT+'</button>'
       + '<span class="pm"><span class="num">'+n+'</span><span class="sz"></span></span>';
     d.querySelector('.num').dataset.label = t('pageWord');
     const fr = d.querySelector('.frame'), tk = d.querySelector('.tick'), rb = d.querySelector('.rot');
     fr.setAttribute('aria-label', t('previewAria', { n })); fr.title = t('previewAria', { n });
     tk.setAttribute('aria-label', t('tickAria', { n, on:p.on })); tk.title = t('tickAria', { n, on:p.on });
     rb.title = t('rotTitle'); rb.setAttribute('aria-label', t('rotAria', { n }));
+    const pt = d.querySelector('.prt'); pt.title = t('printPage', { n }); pt.setAttribute('aria-label', t('printPage', { n }));
+    pt.onclick = ()=> printPages([{ it, p }]);
     const db = d.querySelector('.del'); db.title = t('delTitle'); db.setAttribute('aria-label', t('delAria', { n }));
     db.onclick = ()=> deletePages(it, [p]);
     const sz = d.querySelector('.sz'); sz.textContent = paperName(e.w,e.h);
@@ -974,6 +1010,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     if(chip) chip.lastChild.textContent = t('delOff', { n: offs });
     card.querySelectorAll('.pg').forEach(x=>{ const p = it.pages[+x.dataset.pos], n = p.src+1; x.classList.toggle('off', !p.on); const k = x.querySelector('.tick'); k.setAttribute('aria-pressed', p.on); k.setAttribute('aria-label', t('tickAria', { n, on:p.on })); k.title = t('tickAria', { n, on:p.on }); });
     pillState(card.querySelector('.doc-head .pill'), it);
+    const pb = card.querySelector('.x.pr'); if(pb) pb.disabled = !sel(it).length;
     hideDone(); updateSide();
   }
   function removeItem(it){ if(it.pjs) it.pjs.then(d=>d.destroy()).catch(()=>{}); items = items.filter(i=>i!==it); hideDone(); }
@@ -1092,19 +1129,45 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     }
     return new Blob([await out.save()], { type:'application/pdf' });
   }
-  async function renderImage(it, p){
+  async function renderImage(it, p){ return renderBlob(it, p, dpi(), imgFmt()==='png' ? 'image/png' : 'image/jpeg'); }
+  async function renderBlob(it, p, dpiVal, mime){
     if(!pdfjsOK) throw new Error(t('noRenderer'));
     const doc = await pjsDoc(it), pg = await doc.getPage(p.src+1), rotation = (p.base + p.rot) % 360;
-    let scale = dpi()/72; const v = pg.getViewport({ scale, rotation }), big = Math.max(v.width, v.height);
+    let scale = dpiVal/72; const v = pg.getViewport({ scale, rotation }), big = Math.max(v.width, v.height);
     if(big > 9000) scale *= 9000/big;
     const vp = pg.getViewport({ scale, rotation });
     const c = document.createElement('canvas'); c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
     const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0,0,c.width,c.height);
     await pg.render({ canvasContext: ctx, viewport: vp }).promise;
-    const blob = await new Promise(res=>c.toBlob(res, imgFmt()==='png' ? 'image/png' : 'image/jpeg', .92));
+    const blob = await new Promise(res=>c.toBlob(res, mime, .92));
     c.width = c.height = 0; pg.cleanup();
     if(!blob) throw new Error(t('tooLarge', { n: p.src+1 }));
     return blob;
+  }
+
+  /* ---------- print ---------- */
+  let printing = false, printUrls = [];
+  function clearPrint(){ printUrls.forEach(u=>URL.revokeObjectURL(u)); printUrls = []; $('print-area').textContent = ''; }
+  async function printPages(list){
+    if(printing || !list.length) return;
+    if(!pdfjsOK){ setStatus(t('printFailed', { msg: t('noRenderer') }), 'err'); return; }
+    printing = true; clearPrint();
+    const area = $('print-area'), dpiVal = list.length > 40 ? 150 : 200;
+    try{
+      for(let i=0;i<list.length;i++){
+        setStatus(t('preparingPrint', { n:list.length, i:i+1 }));
+        const { it, p } = list[i], e = eff(p);
+        const blob = await renderBlob(it, p, dpiVal, 'image/jpeg'), url = URL.createObjectURL(blob); printUrls.push(url);
+        const box = document.createElement('div'); box.className = 'pp ' + (e.w > e.h ? 'land' : 'port');
+        const img = new Image(); img.alt = ''; img.src = url; box.appendChild(img); area.appendChild(box);
+        try{ await img.decode(); }catch(_){}
+      }
+      setStatus('');
+      const done = ()=>{ window.removeEventListener('afterprint', done); setTimeout(clearPrint, 500); };
+      window.addEventListener('afterprint', done);
+      window.print();
+    }catch(e){ setStatus(t('printFailed', { msg: errMsg(e) }), 'err'); clearPrint(); }
+    finally{ printing = false; }
   }
 
   /* ---------- save targets (asked on click) ---------- */
@@ -1287,6 +1350,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     inc.innerHTML = (p.on ? SVG_TICK : '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="6" r="4.6"/></svg>') + '<span></span>';
     inc.lastChild.textContent = t(p.on ? 'vIncluded' : 'vExcluded');
     $('v-rot-l').textContent = t('vRotate'); $('v-rot').title = t('rotTitle');
+    $('v-print-l').textContent = t('vPrint'); $('v-print').title = t('printPage', { n:p.src+1 }) + ' (Ctrl/Cmd+P)';
     $('v-del-l').textContent = t('vDelete'); $('v-del').title = t('delTitle') + ' (Delete)';
     $('v-zoom-l').textContent = t(V.zoom ? 'vFit' : 'vZoomIn'); $('v-zoom').title = t(V.zoom ? 'vFit' : 'vZoomIn');
     $('v-zoom-plus').setAttribute('d', V.zoom ? 'M5 7h4' : 'M5 7h4M7 5v4');
@@ -1347,6 +1411,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   $('v-inc').addEventListener('click', viewerToggle);
   $('v-rot').addEventListener('click', viewerRotate);
   $('v-del').addEventListener('click', viewerDelete);
+  $('v-print').addEventListener('click', ()=>{ if(V.it) printPages([{ it:V.it, p:V.it.pages[V.pos] }]); });
   $('v-zoom').addEventListener('click', ()=>{ V.zoom = !V.zoom; showPage(); });
   $('v-stage').addEventListener('click', e=>{ if(e.target.closest('.v-page')){ V.zoom = !V.zoom; showPage(); } else if(e.target === $('v-stage') && !V.zoom) closeViewer(); });
   document.addEventListener('keydown', e=>{
@@ -1357,6 +1422,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     else if(e.key === ' ' && !(e.target instanceof HTMLButtonElement)){ e.preventDefault(); viewerToggle(); }
     else if(e.key === 'r' || e.key === 'R'){ viewerRotate(); }
     else if(e.key === 'Delete' || e.key === 'Backspace'){ e.preventDefault(); viewerDelete(); }
+    else if((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')){ e.preventDefault(); printPages([{ it:V.it, p:V.it.pages[V.pos] }]); }
   });
   let vResize; window.addEventListener('resize', ()=>{ if($('viewer').hidden) return; clearTimeout(vResize); vResize = setTimeout(showPage, 150); });
 
