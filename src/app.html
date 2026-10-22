@@ -4,6 +4,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <style>
+[hidden]{display:none!important}
 /* Layout: work area (add files, pick, rotate and order pages) on the left; action rail on the right with one primary button. Neutral zinc UI, near-black primary, warm accent used sparingly. */
 :root{
   --bg:#f5f5f6; --surface:#ffffff; --sunken:#f0f0f2; --line:#e6e6ea; --line-strong:#d2d2d8;
@@ -55,7 +56,7 @@ button,input,select{font:inherit;color:inherit}
 .lang button[aria-checked="true"]{background:var(--sunken);color:var(--fg);box-shadow:0 0 0 1px var(--line)}
 
 /* mode tabs */
-.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px;box-shadow:var(--shadow)}
+.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px;box-shadow:var(--shadow)}
 .tabs input{position:absolute;opacity:0;pointer-events:none}
 .tabs label{display:flex;align-items:center;justify-content:center;gap:10px;padding:9px 12px;min-width:0;border-radius:9px;cursor:pointer;color:var(--muted);transition:background .12s,color .12s}
 .tabs label svg{width:18px;height:18px;flex:none}
@@ -178,6 +179,17 @@ button,input,select{font:inherit;color:inherit}
 .pg:hover .del,.del:focus-visible{opacity:1}
 .prt{position:absolute;left:7px;top:7px;width:28px;height:28px;border-radius:8px;border:0;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.2),0 0 0 1px var(--line);display:grid;place-items:center;cursor:pointer;opacity:0;transition:opacity .12s;color:var(--fg)}
 .prt svg{width:14px;height:14px}
+.edt{position:absolute;left:39px;top:7px;width:28px;height:28px;border-radius:8px;border:0;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.2),0 0 0 1px var(--line);display:grid;place-items:center;cursor:pointer;opacity:0;transition:opacity .12s;color:var(--fg)}
+.edt svg{width:14px;height:14px}
+.pg:hover .edt,.edt:focus-visible{opacity:1}
+.edt:hover{color:var(--accent)}
+@media (hover:none){.edt{opacity:1}}
+.x.ed:hover{background:var(--sunken);color:var(--fg)}
+.co-note{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 10px 10px;padding:9px 12px;border-radius:10px;background:var(--accent-soft,#fdf0e7);border:1px solid rgba(234,106,31,.35);font-size:13px}
+.co-note span{flex:1;min-width:200px}
+.co-note button{border:0;border-radius:8px;padding:6px 11px;font-weight:600;font-size:12.5px;cursor:pointer;background:none;color:var(--muted)}
+.co-note button.go{background:var(--primary);color:var(--primary-ink)}
+.dn .edited-tag{font-size:11px;font-weight:600;padding:1px 7px;border-radius:99px;background:var(--accent-soft,#fdf0e7);color:var(--accent);margin-left:6px;white-space:nowrap}
 .pg:hover .prt,.prt:focus-visible{opacity:1}
 .prt:hover{color:var(--accent)}
 @media (hover:none){.prt{opacity:1}}
@@ -201,7 +213,7 @@ button,input,select{font:inherit;color:inherit}
 .sz b{color:var(--accent);font-weight:600}
 /* list view */
 .sheets.list{grid-template-columns:minmax(0,1fr);gap:6px}
-.sheets.list .pg{grid-template-columns:30px 46px minmax(0,1fr) 32px 32px 32px;grid-template-areas:"tick frame meta prt rot del";align-items:center;gap:12px;padding:6px 10px 6px 6px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.sheets.list .pg{grid-template-columns:30px 46px minmax(0,1fr) 32px 32px 32px 32px;grid-template-areas:"tick frame meta edt prt rot del";align-items:center;gap:12px;padding:6px 10px 6px 6px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
 .sheets.list .pg:hover{border-color:var(--line-strong)}
 .sheets.list .frame{grid-area:frame;height:58px;padding:5px;border-radius:7px}
 .sheets.list .pg:hover .frame{box-shadow:none}
@@ -209,9 +221,11 @@ button,input,select{font:inherit;color:inherit}
 .sheets.list .rot{grid-area:rot;position:static;opacity:1;box-shadow:none;border:1px solid var(--line)}
 .sheets.list .del{grid-area:del;position:static;opacity:1;box-shadow:none;border:1px solid var(--line)}
 .sheets.list .prt{grid-area:prt;position:static;opacity:1;box-shadow:none;border:1px solid var(--line)}
+.sheets.list .edt{grid-area:edt;position:static;opacity:1;box-shadow:none;border:1px solid var(--line)}
 .sheets.list .pm{grid-area:meta;justify-content:flex-start;align-items:baseline;gap:12px;cursor:zoom-in;min-width:0;padding:8px 0}
 .sheets.list .num{font-size:13.5px}
 .sheets.list .num::before{content:attr(data-label)}
+@media (max-width:560px){.sheets.list .pg{gap:6px;grid-template-columns:26px 40px minmax(0,1fr) 30px 30px 30px 30px}.sheets.list .num::before{content:none}.sheets.list .pm .sz{display:none}}
 .sheets.list .sz{font-size:12px}
 .sheets.list .pg.drop-before::before,.sheets.list .pg.drop-after::after{left:0;right:0;width:auto;height:3px}
 .sheets.list .pg.drop-before::before{top:-5px}.sheets.list .pg.drop-after::after{top:auto;bottom:-5px}
@@ -281,7 +295,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
 }
 
 /* dialog */
-.scrim{position:fixed;inset:0;background:var(--scrim);display:grid;place-items:center;padding:16px;z-index:20}
+.scrim{position:fixed;inset:0;background:var(--scrim);display:grid;place-items:center;padding:16px;z-index:60}
 .dialog{width:min(420px,100%);padding:20px;display:grid;gap:14px}
 .dialog h3{margin:0;font-size:16px;font-weight:600;letter-spacing:-.01em}
 .dialog p{margin:0;color:var(--muted);font-size:13.5px}
@@ -356,6 +370,8 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
         <label for="mode-merge"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="4" y="2" width="10" height="14" rx="1"/><path d="M7 6.5h4M7 9h4M7 11.5h2.5"/></svg><span><b data-t="tMerge"></b><small data-t="tMergeSub"></small></span></label>
         <input type="radio" name="mode" id="mode-images" value="images">
         <label for="mode-images"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="2.5" y="3.5" width="13" height="11" rx="1.5"/><circle cx="6.5" cy="7.5" r="1.3"/><path d="m3 13 4-3.5 3 2.5 2.5-2 2.5 2"/></svg><span><b data-t="tImages"></b><small data-t="tImagesSub"></small></span></label>
+        <input type="radio" name="mode" id="mode-edit" value="edit">
+        <label for="mode-edit"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 2.5H5a1.5 1.5 0 0 0-1.5 1.5v10A1.5 1.5 0 0 0 5 15.5h8a1.5 1.5 0 0 0 1.5-1.5V9"/><path d="M8 11l.5-2.5L14.2 2.8a1.2 1.2 0 0 1 1.7 1.7L10.2 10.2z"/></svg><span><b data-t="tEdit"></b><small data-t="tEditSub"></small></span></label>
   </div>
 
 
@@ -461,6 +477,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
     <div class="v-title"><b id="v-name"></b><span id="v-count"></span></div>
     <div class="v-tools">
       <button class="v-btn v-inc" id="v-inc"></button>
+      <button class="v-btn" id="v-edt"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l.6-2.6 7-7a1.2 1.2 0 0 1 1.9 1.9l-7 7z"/><path d="M8.6 3.4l2 2"/></svg><span class="lbl" id="v-edt-l"></span></button>
       <button class="v-btn" id="v-print"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M4 5V1.8h6V5"/><rect x="1.8" y="5" width="10.4" height="4.8" rx="1"/><path d="M4 8.2h6v4H4z"/></svg><span class="lbl" id="v-print-l"></span></button>
       <button class="v-btn" id="v-del"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 3.8h9M5.6 3.8V2.6h2.8v1.2M3.6 3.8l.6 7.6a1 1 0 0 0 1 .9h3.6a1 1 0 0 0 1-.9l.6-7.6M5.9 6.2v3.8M8.1 6.2v3.8"/></svg><span class="lbl" id="v-del-l"></span></button>
       <button class="v-btn" id="v-rot"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 7A4.5 4.5 0 1 1 9.8 3.5"/><path d="M10 1.2v2.6H7.4"/></svg><span class="lbl" id="v-rot-l"></span></button>
@@ -484,6 +501,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
   </div>
 </div>
 
+<!--EDITOR_MARKUP-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -507,7 +525,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
   const STR = {
     en:{
       tagline:'Split, merge and convert PDFs, page by page', tabsAria:'What do you want to do?', langAria:'Language',
-      tSplit:'Split', tSplitSub:'Pages into PDFs', tMerge:'Merge', tMergeSub:'PDFs into one', tImages:'Images', tImagesSub:'Pages to JPG/PNG',
+      tSplit:'Split', tSplitSub:'Pages into PDFs', tMerge:'Merge', tMergeSub:'PDFs into one', tImages:'Images', tImagesSub:'Pages to JPG/PNG', tEdit:'Edit', tEditSub:'Change the text', editDoc:'Edit text', editPage:v=>'Edit text on page ' + v.n, vEdit:'Edit', btnEdit:v=>'Edit ' + v.name, editSum:'Edit text', editSub:'Click any text on a page to change it. Fonts and colours stay the same.', editNote:'You can also use the ✎ button on any document or page.', editPick:'Add a PDF to start editing', edited:'edited', editApplied:v=>'Changes applied to ' + v.name + '. Split, merge, images and print now use the edited version.', undo:'Undo', keepQ:'Keep your changes?', keepT:'You edited this document. Keep the changes in PDF Maestro, or discard them?', keepA:'Keep changes', keepB:'Discard', editOpenErr:'This PDF couldn’t be opened for editing.', coMissing:'Invoice billed to you with missing or incomplete company details (Kodart Netvork DOO).', coAddBtn:'Review and add', coIgnore:'Ignore',
       dropStart:'Add PDFs to get started', dropMore:'Add more PDFs', dropSub:'Drag files here, or browse. You can add several at once.', browse:'Browse files',
       docs:'Documents', expAll:'Expand all', colAll:'Collapse all', clearAll:'Clear all', exportAria:'Export', restart:'Start over with new files',
       options:'Options', fChunk:'Split into', chunkSingle:'Single pages', chunkEvery:'Every N pages', perFile:'Pages per file',
@@ -558,6 +576,8 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
     mk:{
       tagline:'Делење, спојување и претворање PDF-документи, страница по страница', tabsAria:'Што сакате да направите?', langAria:'Јазик',
       tSplit:'Подели', tSplitSub:'Страници во PDF', tMerge:'Спои', tMergeSub:'Документи во еден', tImages:'Слики', tImagesSub:'Страници во JPG/PNG',
+      tEdit:'Уреди', tEditSub:'Промени текст', editDoc:'Уреди текст', editPage:v=>'Уреди текст на страницата ' + v.n, vEdit:'Уреди', btnEdit:v=>'Уреди ' + v.name, editSum:'Уредување текст', editSub:'Кликнете на кој било текст на страницата за да го промените. Фонтовите и боите остануваат исти.', editNote:'Може да го користите и копчето ✎ на секој документ или страница.', editPick:'Додајте PDF за да започнете со уредување',
+      edited:'уреден', editApplied:v=>'Промените се зачувани во ' + v.name + '. Делењето, спојувањето, сликите и печатењето сега ја користат уредената верзија.', undo:'Врати', keepQ:'Да се задржат промените?', keepT:'Го уредивте овој документ. Да ги задржите промените во PDF Maestro или да ги отфрлите?', keepA:'Задржи промени', keepB:'Отфрли', editOpenErr:'Овој PDF не може да се отвори за уредување.', coMissing:'Фактура адресирана на вас со нецелосни или без податоци за фирмата (Kodart Netvork DOO).', coAddBtn:'Прегледај и додај', coIgnore:'Игнорирај',
       dropStart:'Додајте PDF-документи за да започнете', dropMore:'Додајте уште PDF-документи', dropSub:'Повлечете ги фајловите тука или изберете ги. Може да додадете повеќе одеднаш.', browse:'Изберете фајлови',
       docs:'Документи', expAll:'Отвори ги сите', colAll:'Затвори ги сите', clearAll:'Отстрани ги сите', exportAria:'Извоз', restart:'Почнете од почеток со нови фајлови',
       options:'Опции', fChunk:'Начин на делење', chunkSingle:'Поединечни страници', chunkEvery:'На секои N страници', perFile:'Страници по фајл',
@@ -613,7 +633,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
     document.querySelectorAll('[data-t-aria]').forEach(el=>{ el.setAttribute('aria-label', t(el.dataset.tAria)); });
     $('lang-mk').setAttribute('aria-checked', lang==='mk'); $('lang-en').setAttribute('aria-checked', lang==='en');
   }
-  function setLang(l){ if(l===lang) return; lang = l; remember(); applyStatic(); applyView(); setStatus(''); hideDone(); render(); if(V.it) viewerLabels(); }
+  function setLang(l){ if(l===lang) return; lang = l; remember(); applyStatic(); applyView(); setStatus(''); hideDone(); render(); if(V.it) viewerLabels(); if(window.PMEditor) PMEditor.setLang(l); }
 
   const SVG_CHEV = '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l4 4-4 4"/></svg>';
   const SVG_X = '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3.5 3.5l7 7M10.5 3.5l-7 7"/></svg>';
@@ -621,6 +641,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
   const SVG_ROT = '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 7A4.5 4.5 0 1 1 9.8 3.5"/><path d="M10 1.2v2.6H7.4"/></svg>';
   const SVG_RESET = '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7A4.5 4.5 0 1 0 4.2 3.5"/><path d="M4 1.2v2.6h2.6"/></svg>';
   const ICON = {
+    edit:'<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 2.5H5a1.5 1.5 0 0 0-1.5 1.5v10A1.5 1.5 0 0 0 5 15.5h8a1.5 1.5 0 0 0 1.5-1.5V9"/><path d="M8 11l.5-2.5L14.2 2.8a1.2 1.2 0 0 1 1.7 1.7L10.2 10.2z"/></svg>',
     split:'<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2" y="3" width="6" height="12" rx="1"/><rect x="10" y="3" width="6" height="12" rx="1"/></svg>',
     merge:'<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="4" y="2" width="10" height="14" rx="1"/><path d="M7 6.5h4M7 9h4M7 11.5h2.5"/></svg>',
     images:'<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.5" y="3.5" width="13" height="11" rx="1.5"/><circle cx="6.5" cy="7.5" r="1.3"/><path d="m3 13 4-3.5 3 2.5 2.5-2 2.5 2"/></svg>'
@@ -668,6 +689,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
   const selCount = () => ready().reduce((a,i)=>a+sel(i).length,0);
   const eff = p => p.rot%180 ? { w:p.h, h:p.w } : { w:p.w, h:p.h };
   const modified = it => it.pages.some((p,i)=>p.rot || (i>0 && p.src < it.pages[i-1].src));
+  const SVG_PEN = '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l.6-2.6 7-7a1.2 1.2 0 0 1 1.9 1.9l-7 7z"/><path d="M8.6 3.4l2 2"/></svg>';
   const SVG_PRINT = '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M4 5V1.8h6V5"/><rect x="1.8" y="5" width="10.4" height="4.8" rx="1"/><path d="M4 8.2h6v4H4z"/></svg>';
   const SVG_TRASH = '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 3.8h9M5.6 3.8V2.6h2.8v1.2M3.6 3.8l.6 7.6a1 1 0 0 0 1 .9h3.6a1 1 0 0 0 1-.9l.6-7.6M5.9 6.2v3.8M8.1 6.2v3.8"/></svg>';
 
@@ -787,7 +809,11 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
         head.appendChild(m);
       });
     }
+    if(it.edited){ const tg = document.createElement('span'); tg.className = 'edited-tag'; tg.textContent = t('edited'); acc.querySelector('.dn span').appendChild(tg); }
     if(!it.error){
+      const eb = document.createElement('button'); eb.className='x ed'; eb.innerHTML = SVG_PEN; eb.title = t('editDoc'); eb.setAttribute('aria-label', t('editDoc') + ': ' + it.name);
+      eb.onclick = ()=> openEditor(it, (it.pages.find(p=>p.on) || it.pages[0] || { src:0 }).src);
+      head.appendChild(eb);
       const pb = document.createElement('button'); pb.className='x pr'; pb.innerHTML = SVG_PRINT; pb.title = t('printDoc'); pb.setAttribute('aria-label', t('printDoc') + ': ' + it.name);
       pb.disabled = !sel(it).length;
       pb.onclick = ()=> printPages(sel(it).map(p=>({ it, p })));
@@ -797,6 +823,15 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
     x.onclick = ()=>{ removeItem(it); render(); };
     head.appendChild(x);
     card.appendChild(head);
+    if(it.coMissing && !it.coIgnored && !it.error){
+      const n = document.createElement('div'); n.className = 'co-note';
+      n.innerHTML = '<span></span><button class="go"></button><button class="ig"></button>';
+      n.querySelector('span').textContent = t('coMissing');
+      n.querySelector('.go').textContent = t('coAddBtn'); n.querySelector('.ig').textContent = t('coIgnore');
+      n.querySelector('.go').onclick = ()=> openEditor(it, it.coMissing.page || 0, { company:'auto' });
+      n.querySelector('.ig').onclick = ()=>{ it.coIgnored = true; swap(card, docCard(it)); };
+      card.appendChild(n);
+    }
 
     if(it.error){ acc.disabled = true; const e = document.createElement('p'); e.className='doc-err'; e.textContent = t(it.error); card.appendChild(e); return card; }
     acc.onclick = ()=>{ it.open = !it.open; swap(card, docCard(it)); };
@@ -867,6 +902,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
       + '<button class="rot">'+SVG_ROT+'</button>'
       + '<button class="del">'+SVG_TRASH+'</button>'
       + '<button class="prt">'+SVG_PRINT+'</button>'
+      + '<button class="edt">'+SVG_PEN+'</button>'
       + '<span class="pm"><span class="num">'+n+'</span><span class="sz"></span></span>';
     d.querySelector('.num').dataset.label = t('pageWord');
     const fr = d.querySelector('.frame'), tk = d.querySelector('.tick'), rb = d.querySelector('.rot');
@@ -875,6 +911,8 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
     rb.title = t('rotTitle'); rb.setAttribute('aria-label', t('rotAria', { n }));
     const pt = d.querySelector('.prt'); pt.title = t('printPage', { n }); pt.setAttribute('aria-label', t('printPage', { n }));
     pt.onclick = ()=> printPages([{ it, p }]);
+    const et = d.querySelector('.edt'); et.title = t('editPage', { n }); et.setAttribute('aria-label', t('editPage', { n }));
+    et.onclick = ()=> openEditor(it, p.src);
     const db = d.querySelector('.del'); db.title = t('delTitle'); db.setAttribute('aria-label', t('delAria', { n }));
     db.onclick = ()=> deletePages(it, [p]);
     const sz = d.querySelector('.sz'); sz.textContent = paperName(e.w,e.h);
@@ -955,6 +993,8 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
   function tree(nodes, pre){ let out=[]; nodes.forEach((n,k)=>{ const last = k===nodes.length-1; out.push(pre+(last?'└ ':'├ ')+n.name); if(n.children) out.push(...tree(n.children, pre+(last?'   ':'│  '))); }); return out; }
 
   function updateSide(){
+    if(mode()==='edit') return updateSideEdit();
+    $('opts').hidden = false;
     const m = mode(), merge = m==='merge', imgs = m==='images', r = ready(), n = selCount(), outs = outCount();
     const docsWith = r.filter(i=>sel(i).length).length, zip = fmt()==='zip';
     const whatKey = imgs ? (imgFmt()==='png' ? 'png' : 'jpg') : chunk()==='every' ? 'pdf' : 'sepPdf';
@@ -1003,11 +1043,74 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
     $('preview').textContent = [root, ...tree(nodes,'')].join('\n');
   }
 
+  /* ---------- edit mode ---------- */
+  const editTarget = () => ready().find(i => i.pages.length) || null;
+  function updateSideEdit(){
+    const it = editTarget();
+    $('opts').hidden = true;
+    $('sum-n').textContent = t('editSum');
+    $('sum-sub').textContent = it ? t('editSub') : t('editPick');
+    [$('go'), $('go2')].forEach(b=>{ b.disabled = busy || !it; b.innerHTML = ICON.edit + '<span></span>'; b.querySelector('span').textContent = it ? t('btnEdit', { name: it.name }) : t('addFirst'); });
+    $('m-n').textContent = t('editSum'); $('m-s').textContent = $('sum-sub').textContent;
+    $('go-note').textContent = it ? t('editNote') : '';
+  }
+  // the editor (Edit Lab) runs in a full-screen layer on top of PDF Maestro
+  let EDIT = null;
+  async function openEditor(it, srcPage, opts){
+    if(!window.PMEditor){ setStatus(t('editOpenErr'), 'err'); return; }
+    if(!$('viewer').hidden) closeViewer();
+    EDIT = { it, back: document.activeElement };
+    const root = $('el-root'); root.hidden = false; document.body.style.overflow = 'hidden';
+    PMEditor.setLang(lang);
+    PMEditor.onApply = async ()=>{
+      const bytes = await PMEditor.build();
+      applyEdited(it, bytes, true);
+      await PMEditor.open(bytes.slice(), it.name, PMEditor.state.page, { company:false });
+    };
+    try{ await PMEditor.open(it.bytes.slice(), it.name, srcPage || 0, opts); $('el-done').focus(); }
+    catch(e){ console.error(e); closeEditorLayer(); setStatus(t('editOpenErr'), 'err'); }
+  }
+  function closeEditorLayer(){
+    PMEditor.close(); PMEditor.onApply = null; $('el-root').hidden = true; document.body.style.overflow = '';
+    const back = EDIT && EDIT.back; EDIT = null; if(back && back.isConnected && back.focus) back.focus();
+  }
+  function applyEdited(it, bytes, quiet){
+    const old = it.bytes, wasEdited = !!it.edited;
+    const swapBytes = (b, ed) => {
+      it.bytes = b; it.edited = ed;
+      if(it.pjs){ it.pjs.then(d=>d.destroy()).catch(()=>{}); it.pjs = null; }
+      it.pages.forEach(p=>{ p.thumb = null; p.pending = false; p.fail = false; });
+      (it.deleted || []).forEach(p=>{ p.thumb = null; p.pending = false; p.fail = false; });
+      hideDone(); render();
+    };
+    swapBytes(bytes, true);
+    if(it.coMissing) PMEditor.detect(bytes).then(r=>{ if(!r){ it.coMissing = null; render(); } });
+    if(!quiet) showToast(t('editApplied', { name: it.name }), ()=> swapBytes(old, wasEdited));
+  }
+  async function editorDone(){
+    if(!EDIT) return;
+    const it = EDIT.it;
+    if(PMEditor.hasChanges()){
+      $('el-done').disabled = true;
+      try{ const bytes = await PMEditor.build(); closeEditorLayer(); applyEdited(it, bytes); }
+      catch(e){ console.error(e); setStatus(t('saveStopped', { msg: errMsg(e) }), 'err'); closeEditorLayer(); }
+      finally{ $('el-done').disabled = false; }
+    } else closeEditorLayer();
+  }
+  async function editorBack(){
+    if(!EDIT) return;
+    if(!PMEditor.hasChanges()){ closeEditorLayer(); return; }
+    const c = await askChoice(t('keepQ'), t('keepT'), t('keepA'), t('keepB'));
+    if(c === 'a') return editorDone();
+    if(c === 'b') closeEditorLayer();
+  }
+
   /* ---------- files in ---------- */
   async function addFiles(fileList){
     const files = [...fileList].filter(f=>/\.pdf$/i.test(f.name) || f.type==='application/pdf');
     if(!files.length){ setStatus(t('notPdf'), 'err'); return; }
     hideDone(); setStatus(t('reading', { n: files.length }));
+    const before = items.length;
     for(const f of files){
       const it = { id: ++uid, name: f.name, open: false };
       try{
@@ -1021,6 +1124,10 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
     }
     if(ready().length===1) ready()[0].open = true;
     setStatus(''); render();
+    if(mode()==='edit'){ const first = items.slice(before).find(i => !i.error && i.pages.length); if(first) openEditor(first, 0); }
+    if(window.PMEditor) items.slice(before).filter(i => !i.error && i.pages.length).forEach(async it => {
+      const r = await PMEditor.detect(it.bytes.slice()); if(r && items.includes(it)){ it.coMissing = r; render(); }
+    });
   }
   function setStatus(s, kind){ statusEl.textContent = s; statusEl.className = 'status' + (kind ? ' ' + kind : ''); }
   function hideDone(){ $('done').hidden = true; }
@@ -1135,6 +1242,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
 
   /* ---------- actions ---------- */
   async function go(){
+    if(mode()==='edit'){ const it = editTarget(); if(it && !busy) openEditor(it, (it.pages.find(p=>p.on) || it.pages[0]).src); return; }
     if(busy || selCount()===0) return;
     hideDone(); setStatus('');
     return mode()==='merge' ? doMerge() : doMany();
@@ -1272,6 +1380,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
     inc.innerHTML = (p.on ? SVG_TICK : '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="6" r="4.6"/></svg>') + '<span></span>';
     inc.lastChild.textContent = t(p.on ? 'vIncluded' : 'vExcluded');
     $('v-rot-l').textContent = t('vRotate'); $('v-rot').title = t('rotTitle');
+    $('v-edt-l').textContent = t('vEdit'); $('v-edt').title = t('editPage', { n:p.src+1 });
     $('v-print-l').textContent = t('vPrint'); $('v-print').title = t('printPage', { n:p.src+1 }) + ' (Ctrl/Cmd+P)';
     $('v-del-l').textContent = t('vDelete'); $('v-del').title = t('delTitle') + ' (Delete)';
     $('v-zoom-l').textContent = t(V.zoom ? 'vFit' : 'vZoomIn'); $('v-zoom').title = t(V.zoom ? 'vFit' : 'vZoomIn');
@@ -1333,6 +1442,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
   $('v-inc').addEventListener('click', viewerToggle);
   $('v-rot').addEventListener('click', viewerRotate);
   $('v-del').addEventListener('click', viewerDelete);
+  $('v-edt').addEventListener('click', ()=>{ if(V.it) openEditor(V.it, V.it.pages[V.pos].src); });
   $('v-print').addEventListener('click', ()=>{ if(V.it) printPages([{ it:V.it, p:V.it.pages[V.pos] }]); });
   $('v-zoom').addEventListener('click', ()=>{ V.zoom = !V.zoom; showPage(); });
   $('v-stage').addEventListener('click', e=>{ if(e.target.closest('.v-page')){ V.zoom = !V.zoom; showPage(); } else if(e.target === $('v-stage') && !V.zoom) closeViewer(); });
@@ -1370,6 +1480,12 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
   $('clear-all').addEventListener('click', ()=>{ items.slice().forEach(removeItem); render(); });
   $('restart').addEventListener('click', ()=>{ items.slice().forEach(removeItem); setStatus(''); render(); input.click(); });
 
+  if($('el-root')){
+    $('el-done').addEventListener('click', editorDone);
+    $('el-back').addEventListener('click', editorBack);
+    document.addEventListener('keydown', e=>{ if(EDIT && e.key==='Escape' && !e.defaultPrevented && $('modal').hidden && !document.querySelector('#el-root .ed-box') && !(window.PMEditor && PMEditor.state.sel.size)) editorBack(); });
+  }
+  window.__maestro = { items: () => items, openEditor };
   applyStatic();
   applyView();
   render();
