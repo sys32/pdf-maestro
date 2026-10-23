@@ -172,7 +172,9 @@ button,input,select{font:inherit;color:inherit}
 .tb.del1{color:var(--danger)}.tb.del1:hover{background:var(--danger-soft);border-color:transparent}
 .tb svg{width:14px;height:14px}
 .ur{display:flex;gap:4px}
+.ib.tool[hidden]{display:none}
 .ib.tool{width:auto;padding:0 10px;gap:6px;display:inline-flex;font-size:12.5px;font-weight:600}
+@media (max-width:760px){.ib.tool span{display:none}.ib.tool{padding:0 8px}}
 .ib.tool[aria-pressed="true"]{background:var(--primary);color:var(--primary-ink);border-color:var(--primary)}
 .page.adding,.page.adding .ln{cursor:crosshair}
 .ln.add{outline-style:dashed}
@@ -184,6 +186,20 @@ button,input,select{font:inherit;color:inherit}
 .cobar textarea{width:100%;min-height:52px;border:1px solid var(--line-strong);border-radius:8px;padding:6px 8px;font:inherit;font-size:13px;background:var(--surface);color:var(--fg);resize:vertical}
 .cobar .b.pri{padding:7px 14px}
 .cobar .warnl{color:var(--warn);font-size:12px}
+.cobar .co-list{display:grid;gap:3px}
+.cobar .co-it{font-size:12.5px;color:var(--fg);padding-left:2px}
+.cobar .co-chk{display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer}
+.cobar .co-chk input{accent-color:var(--accent)}
+.coform{border:1px solid var(--line);border-radius:10px;padding:0}
+.coform summary{list-style:none;cursor:pointer;padding:9px 12px;display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600}
+.coform summary::-webkit-details-marker{display:none}
+.coform summary small{color:var(--muted);font-weight:400;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right}
+.coform .cf{display:grid;gap:8px;padding:0 12px 12px}
+.coform label{display:grid;gap:3px;font-size:12px;color:var(--muted)}
+.coform input,.coform textarea{border:1px solid var(--line-strong);border-radius:8px;padding:7px 9px;font:inherit;font-size:13px;background:var(--surface);color:var(--fg)}
+.coform textarea{min-height:64px;resize:vertical}
+.coform .cf-row{display:flex;align-items:center;gap:10px}
+.coform .cf-row span{font-size:12px;color:var(--ok)}
 .fmt{display:inline-flex;gap:3px;margin-left:4px}
 .fmt span{padding:0 5px;border-radius:5px;background:var(--sunken);color:var(--fg);font-weight:600}
 
@@ -260,6 +276,7 @@ button,input,select{font:inherit;color:inherit}
           <button class="ib" id="next" aria-label="Next page"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l4 4-4 4"/></svg></button>
         </div>
         <button class="ib tool" id="addt" aria-pressed="false"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2.5 3.5V2.5h7v1M6 2.5v8M4.5 10.5h3M10.5 8.5v4M8.5 10.5h4"/></svg><span data-el="addText"></span></button>
+        <button class="ib tool" id="scan" title=""><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 1.5H3.5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h4"/><path d="M8.5 1.5 11 4v2"/><circle cx="10" cy="10" r="2.2"/><path d="m11.6 11.6 1.4 1.4"/></svg><span data-el="scanBtn"></span></button>
         <div class="ur"><button class="ib" id="undo" disabled><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2.5 2 5.5l3 3"/><path d="M2.5 5.5h6a3.5 3.5 0 0 1 0 7H6"/></svg></button><button class="ib" id="redo" disabled><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2.5l3 3-3 3"/><path d="M11.5 5.5h-6a3.5 3.5 0 0 0 0 7H8"/></svg></button></div>
         <div class="seg" role="group">
           <button id="v-edit" aria-pressed="true" data-el="vEdit"></button>
@@ -295,6 +312,16 @@ button,input,select{font:inherit;color:inherit}
         <p class="sec-t"><span data-el="changes"></span><span id="ch-n"></span></p>
         <div class="changes" id="changes"></div>
       </div>
+      <details class="coform" id="coform">
+        <summary><span data-el="coForm"></span><small id="co-sum"></small></summary>
+        <div class="cf">
+          <label><span data-el="coName"></span><input id="co-name" spellcheck="false"></label>
+          <label><span data-el="coAddrL"></span><textarea id="co-addr" spellcheck="false"></textarea></label>
+          <label><span data-el="coMail"></span><input id="co-mail" type="text" spellcheck="false" placeholder="name@codeart.mk"></label>
+          <div class="cf-row"><button class="b pri" id="co-save" data-el="coSave"></button><span id="co-msg"></span></div>
+          <p class="note" data-el="coFormNote" style="font-size:11.5px"></p>
+        </div>
+      </details>
       <div style="display:grid;gap:8px">
         <button class="btn" id="apply" hidden disabled><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg><span data-el="applyDoc"></span></button>
         <button class="btn" id="save" disabled><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10"/></svg><span data-el="save"></span></button>
@@ -325,7 +352,7 @@ button,input,select{font:inherit;color:inherit}
   let lang = 'mk';
   try{ const s = JSON.parse(localStorage.getItem('pdfmaestro') || '{}'); if(s.lang==='en'||s.lang==='mk') lang = s.lang; }catch(e){}
   const STR = {
-    en:{ tag:'Edit Lab · experiment', back:'Back', done:'Done', addText:'Text', addTextT:'Add text: click on the page where it should go (Esc cancels)', addHint:'Click on the page to place the new text', newText:'New text', applyDoc:'Save to document', applied:'Saved to the document', coFound:'This looks like an invoice billed to you, but your company details are missing.', coPartial:'This invoice is billed to you, but your company name is incomplete.', coAdd:'Add company details', coEdit:'Change text', coNo:'Not now', coDone:'Company details added. Check the page, then click Done or save.', coTight:'There wasn’t enough free space, so the lines below were moved down a little. Check the layout.', coFont:'The original font doesn’t have all these letters, so a matching standard font is used.', undo:'Undo (Ctrl+Z)', redo:'Redo (Ctrl+Shift+Z)', del:'Delete text (Delete)', selDel:'Delete', gone:'Deleted · click to restore', tipDelKey:'Delete key removes it', editTitle:'Edit text', editHint:'Click text to edit · drag to move · Done keeps the changes in PDF Maestro', tagline:'Edit the real text inside a PDF', dropT:'Open a PDF to edit', dropS:'Works best with invoices and documents made in Word, Excel, Google Docs, Canva or accounting software. Your file stays on this device.', browse:'Choose a PDF',
+    en:{ tag:'Edit Lab · experiment', back:'Back', done:'Done', addText:'Text', addTextT:'Add text: click on the page where it should go (Esc cancels)', addHint:'Click on the page to place the new text', newText:'New text', applyDoc:'Save to document', applied:'Saved to the document', coFound:'This looks like an invoice billed to you, but your company details are missing.', coPartial:'This invoice is billed to you, but your company name is incomplete.', coAddrOnly:'This invoice is billed to your company, but the address is different from yours.', scanBtn:'Check invoice', scanT:'Check this invoice for your company name and address', coOk:'Nothing to fix: this invoice already has your company details, or it isn’t billed to you.', coApplied:'Your company details are already added on this page. Press Ctrl+Z (or ↶) to undo them.', coAddrDiff:'Different address', coAddrMissing:'This invoice is billed to your company, but your address is missing.', coAddrAdd:'Add address', coAddrToo:'Change the address as well', coAddrBtn:'Change address', coForm:'Company details', coName:'Company name', coAddrL:'Address (one line per row)', coMail:'Email (several allowed, separated by commas)', coSave:'Save', coSaved:'Saved. Invoices are checked against these details.', coFormNote:'Used to check invoices billed to you. Stored only in this browser.', coAdd:'Add company details', coEdit:'Edit company details', coNo:'Not now', coDone:'Company details added. Check the page, then click Done or save.', coTight:'There wasn’t enough free space, so the lines below were moved down a little. Check the layout.', coFont:'The original font doesn’t have all these letters, so a matching standard font is used.', undo:'Undo (Ctrl+Z)', redo:'Redo (Ctrl+Shift+Z)', del:'Delete text (Delete)', selDel:'Delete', gone:'Deleted · click to restore', tipDelKey:'Delete key removes it', editTitle:'Edit text', editHint:'Click text to edit · drag to move · Done keeps the changes in PDF Maestro', tagline:'Edit the real text inside a PDF', dropT:'Open a PDF to edit', dropS:'Works best with invoices and documents made in Word, Excel, Google Docs, Canva or accounting software. Your file stays on this device.', browse:'Choose a PDF',
       h1t:'Editable', h1s:'Click the text and type. If the original font has every letter you type, it stays exactly the same.', h2t:'Substitute font', h2s:'A letter you typed isn’t in the original font, so a similar font is used for that line.', h3t:'Not editable', h3s:'Scans, text turned into outlines, or text inside images. Shown hatched so you know.',
       other:'Open another', vEdit:'Edited', vOrig:'Original', zFit:'Fit', sEd:'editable lines', sNo:'not editable', sFl:'form fields',
       lgOk:'Editable text (green outline on hover)', lgWarn:'Edited with a substitute font', lgNo:'Not editable (hatched)', lgField:'Fillable form field',
@@ -337,7 +364,7 @@ button,input,select{font:inherit;color:inherit}
       why:{ type3:'Uses a special drawn font', encoding:'Uses an unsupported text encoding', nounicode:'The PDF doesn’t say which letters these are', rotated:'Rotated text', hidden:'Hidden text layer (from a scan)', nofont:'Font is missing', empty:'Empty', object:'Inside an embedded object or image' },
       noText:'This page has no editable text. It may be a scan or text converted to outlines.', someNo:v=>v.n+' text area'+(v.n===1?' isn’t':'s aren’t')+' editable on this page. They’re shown hatched.',
       building:'Updating preview…', saved:v=>'Saved '+v.name, dlCancel:'Download cancelled.', err:v=>'Couldn’t save: '+v.m, notPdf:'That file isn’t a PDF.', openErr:'Couldn’t open this PDF. It may be damaged or password-protected.', loading:'Reading the PDF…', inFile:'In the file ✓' },
-    mk:{ tag:'Edit Lab · експеримент', back:'Назад', done:'Готово', addText:'Текст', addTextT:'Додај текст: кликнете на страницата каде да оди (Esc откажува)', addHint:'Кликнете на страницата за да го поставите новиот текст', newText:'Нов текст', applyDoc:'Зачувај во документот', applied:'Зачувано во документот', coFound:'Ова изгледа како фактура за вас, но недостасуваат податоците за фирмата.', coPartial:'Оваа фактура е адресирана на вас, но името на фирмата е нецелосно.', coAdd:'Додај податоци за фирмата', coEdit:'Промени текст', coNo:'Не сега', coDone:'Податоците за фирмата се додадени. Проверете ја страницата, па кликнете Готово или Зачувај.', coTight:'Немаше доволно празен простор, па редовите подолу се поместени малку надолу. Проверете го распоредот.', coFont:'Оригиналниот фонт ги нема сите букви, па се користи сличен стандарден фонт.', undo:'Врати (Ctrl+Z)', redo:'Повтори (Ctrl+Shift+Z)', del:'Избриши текст (Delete)', selDel:'Избриши', gone:'Избришано · кликнете за враќање', tipDelKey:'Delete го брише', editTitle:'Уредување текст', editHint:'Кликнете текст за уредување · повлечете за поместување · Готово ги зачувува промените во PDF Maestro', tagline:'Уредувај го вистинскиот текст во PDF', dropT:'Отворете PDF за уредување', dropS:'Најдобро работи со фактури и документи направени во Word, Excel, Google Docs, Canva или сметководствен софтвер. Фајлот останува на овој уред.', browse:'Изберете PDF',
+    mk:{ tag:'Edit Lab · експеримент', back:'Назад', done:'Готово', addText:'Текст', addTextT:'Додај текст: кликнете на страницата каде да оди (Esc откажува)', addHint:'Кликнете на страницата за да го поставите новиот текст', newText:'Нов текст', applyDoc:'Зачувај во документот', applied:'Зачувано во документот', coFound:'Ова изгледа како фактура за вас, но недостасуваат податоците за фирмата.', coPartial:'Оваа фактура е адресирана на вас, но името на фирмата е нецелосно.', coAddrOnly:'Оваа фактура е адресирана на вашата фирма, но адресата е различна од вашата.', scanBtn:'Провери фактура', scanT:'Провери дали фактурата ги има името и адресата на вашата фирма', coOk:'Нема што да се поправи: фактурата веќе ги има вашите податоци или не е адресирана на вас.', coApplied:'Податоците за фирмата се веќе додадени. Притиснете Ctrl+Z (или ↶) за да ги вратите.', coAddrDiff:'Различна адреса', coAddrMissing:'Оваа фактура е адресирана на вашата фирма, но адресата недостасува.', coAddrAdd:'Додај адреса', coAddrToo:'Смени ја и адресата', coAddrBtn:'Смени адреса', coForm:'Податоци за фирмата', coName:'Име на фирмата', coAddrL:'Адреса (секој ред посебно)', coMail:'Е-пошта (може повеќе, одделени со запирка)', coSave:'Зачувај', coSaved:'Зачувано. Фактурите се проверуваат според овие податоци.', coFormNote:'Се користи за проверка на фактури адресирани на вас. Се чува само во овој прелистувач.', coAdd:'Додај податоци за фирмата', coEdit:'Уреди податоци за фирмата', coNo:'Не сега', coDone:'Податоците за фирмата се додадени. Проверете ја страницата, па кликнете Готово или Зачувај.', coTight:'Немаше доволно празен простор, па редовите подолу се поместени малку надолу. Проверете го распоредот.', coFont:'Оригиналниот фонт ги нема сите букви, па се користи сличен стандарден фонт.', undo:'Врати (Ctrl+Z)', redo:'Повтори (Ctrl+Shift+Z)', del:'Избриши текст (Delete)', selDel:'Избриши', gone:'Избришано · кликнете за враќање', tipDelKey:'Delete го брише', editTitle:'Уредување текст', editHint:'Кликнете текст за уредување · повлечете за поместување · Готово ги зачувува промените во PDF Maestro', tagline:'Уредувај го вистинскиот текст во PDF', dropT:'Отворете PDF за уредување', dropS:'Најдобро работи со фактури и документи направени во Word, Excel, Google Docs, Canva или сметководствен софтвер. Фајлот останува на овој уред.', browse:'Изберете PDF',
       h1t:'Може да се уредува', h1s:'Кликнете на текстот и пишувајте. Ако оригиналниот фонт ги има сите букви што ги пишувате, изгледот останува ист.', h2t:'Заменски фонт', h2s:'Буква што ја напишавте ја нема во оригиналниот фонт, па за тој ред се користи сличен фонт.', h3t:'Не може да се уредува', h3s:'Скенирани страници, текст претворен во облици или текст во слики. Се прикажуваат шрафирано.',
       other:'Отвори друг', vEdit:'Уредено', vOrig:'Оригинал', zFit:'Цела', sEd:'реда за уредување', sNo:'не може', sFl:'полиња',
       lgOk:'Текст за уредување (зелена рамка при покажување)', lgWarn:'Уредено со заменски фонт', lgNo:'Не може да се уредува (шрафирано)', lgField:'Поле за пополнување',
@@ -354,7 +381,7 @@ button,input,select{font:inherit;color:inherit}
   function applyStatic(){
     if(!EMBED) document.documentElement.lang = lang;
     ROOT().querySelectorAll('[data-el]').forEach(el => el.textContent = t(el.dataset.el));
-    [['undo','undo'],['redo','redo']].forEach(([id, k]) => { const b = $(id); if(b){ b.title = t(k); b.setAttribute('aria-label', t(k)); } });
+    [['undo','undo'],['redo','redo'],['scan','scanT']].forEach(([id, k]) => { const b = $(id); if(b){ b.title = t(k); b.setAttribute('aria-label', t(k)); } });
     if(!EMBED){ $('lang-mk').setAttribute('aria-checked', lang==='mk'); $('lang-en').setAttribute('aria-checked', lang==='en'); }
   }
   function setLang(l){ lang = l; if(EMBED){ applyStatic(); if(st.orig){ renderOverlay(); renderChanges(); } return; } try{ const s = JSON.parse(localStorage.getItem('pdfmaestro')||'{}'); s.lang = l; localStorage.setItem('pdfmaestro', JSON.stringify(s)); }catch(e){} applyStatic(); if(st.orig) { renderOverlay(); renderChanges(); } }
@@ -401,125 +428,278 @@ button,input,select{font:inherit;color:inherit}
       setStatus('');
       await showPage();
       renderChanges(); updateSave(); updateUndo();
+      st.isInvoice = false;
+      for(let pp = 0; pp < Math.min(pages, 2); pp++){ const AA = await analysis(pp); if(INV_RE.test(AA.lines.map(l => l.text).join('\n'))){ st.isInvoice = true; break; } }
+      $('scan').hidden = !st.isInvoice;
       if(opts.company !== false){
-        const prop = await companyProposal(st.analysisDoc, st.analyses, st.pages).catch(e => { console.warn(e); return null; });
-        if(prop){ if(opts.company === 'auto') await applyCompany(prop); else offerCompany(prop); }
+        const prop = await companyProposal(st.analysisDoc, st.analyses, st.pages, null).catch(e => { console.warn(e); return null; });
+        if(prop){ if(opts.company === 'auto' && !prop.addr) await applyCompany(prop, false); else offerCompany(prop); }
       }
     }
   }
 
   /* ---------- company details on invoices billed to us ---------- */
-  const CO_DEFAULT = 'Kodart Netvork DOO\nSkopje, Macedonia';
-  const coText = () => { try{ return localStorage.getItem('pm-company') || CO_DEFAULT; }catch(e){ return CO_DEFAULT; } };
-  const EMAIL_RE = /[\w.+-]+@(gmail\.com|codeart\.mk)\b/i;
+  // our company profile (name, address, email), kept in this browser; editable in the "Company details" panel
+  const CO_DEFAULT = { name:'Kodart Netvork DOO', address:'Skopje, Macedonia', email:'' };
+  function getCo(){
+    try{
+      const j = localStorage.getItem('pm-company2'); if(j){ const o = JSON.parse(j); if(o && o.name) return { name:o.name, address:o.address || '', email:o.email || '' }; }
+      const old = localStorage.getItem('pm-company'); if(old){ const L = old.split('\n'); return { name:L[0].trim(), address:L.slice(1).join('\n').trim(), email:'' }; }
+    }catch(e){}
+    return Object.assign({}, CO_DEFAULT);
+  }
+  function setCo(name, address, email){ try{ localStorage.setItem('pm-company2', JSON.stringify({ name:(name||'').trim(), address:(address||'').trim(), email:(email||'').trim() })); }catch(e){} renderCoForm(); }
+  const coAddr = () => getCo().address.split('\n').map(x => x.trim()).filter(Boolean);
+  const coEmails = () => getCo().email.split(/[\s,;]+/).map(x => x.trim().toLowerCase()).filter(x => /@/.test(x));
+  const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // our emails: the ones saved in Company details, plus any @codeart.mk / @gmail.com address
+  const emailRe = () => new RegExp('(' + [...coEmails().map(reEsc), '[\\w.+-]+@codeart\\.mk', '[\\w.+-]+@gmail\\.com'].join('|') + ')\\b', 'i');
   const INV_RE = /\b(invoice|receipt|bill(ed)?\s*to|amount\s*(due|paid)|tax\s*invoice|subtotal)\b|фактура|сметка|рачун/i;
   const LABEL_RE = /(bill(ed)?\s*to|invoice\s*to|sold\s*to|customer|client|клиент|купувач|примач|^to:?$|:\s*$)/i;
-  const coLines = () => coText().split('\n').map(x => x.trim()).filter(Boolean);
+  const BILL_RE = /(bill(ed)?\s*to|invoice\s*to|sold\s*to|ship\s*to|customer|client|recipient|клиент|купувач|примач|наручител|корисник)/i;
+  const NOT_ADDR_RE = /@|\b(vat|tax|ддв|едб|edb|vat\s*id|tax\s*id|phone|tel|mob|iban|reg)\b|^\+?[\d\s()./-]{7,}$/i;
+  // stand-ins that billing systems print when no company was given ("name@gmail.com's Organization")
+  const PLACEHOLDER_RE = /['’]s\s+(organization|organisation|company|team|workspace|account)\b/i;
   const norm = x => (x || '').toLowerCase().replace(/[^a-zа-шѓќљњџѕј0-9]+/gi, ' ').trim();
   const SUFFIX_RE = /\b(doo|dooel|d o o|ltd|llc|inc|gmbh|доо|дооел)\b/gi;
-  // the company name without its legal suffix ("kodart netvork"), plus spellings we've seen
-  const coCores = () => { const core = norm(coLines()[0] || '').replace(SUFFIX_RE, '').replace(/\s+/g, ' ').trim(); return [...new Set([core, 'kodart netvork', 'kodart network', 'codeart network', 'codeart netvork'].filter(Boolean))]; };
+  const coCores = () => { const core = norm(getCo().name).replace(SUFFIX_RE, '').replace(/\s+/g, ' ').trim(); return [...new Set([core, 'kodart netvork', 'kodart network', 'codeart network', 'codeart netvork'].filter(Boolean))]; };
   const tokensIn = (line, text) => { const tk = norm(line).split(' ').filter(w => w.length >= 3); return tk.length > 0 && tk.every(w => text.includes(w)); };
-  async function companyProposal(doc, analyses, pages){
+  const addrTokens = s => norm(s).split(' ').filter(w => w.length >= 3 || /\d/.test(w));
+  const sameAddress = (ours, theirs) => { const T = new Set(addrTokens(theirs.join(' '))); const O = addrTokens(ours.join(' ')); return O.length > 0 && O.every(w => T.has(w)); };
+  const topOf = l => l.y + (l.ascent || l.size*0.8), botOf = l => l.y - (l.descent || l.size*0.22);
+  const baseId = id => typeof id === 'string' && id.includes('#') ? id.split('#')[0] : id;
+  // the page as it is now: deleted lines are free space, moved/edited/added text where it ended up
+  function viewLines(A, p, edits){
+    if(!edits || !edits.size) return A.lines;
+    const out = [], k = id => p + ':' + id;
+    A.lines.forEach(l => {
+      const e = edits.get(k(l.id)); if(!e){ out.push(l); return; }
+      if(e.text === '') return;
+      const dx = e.move ? e.move.dx : 0, dy = e.move ? e.move.dy : 0, parts = (e.text || '').split('\n');
+      const size = (e.style && e.style.size) || l.size, lh = size * ((e.style && e.style.leading) || 1.25);
+      out.push(Object.assign({}, l, { text: parts[0], x0: l.x0 + dx, x1: Math.max(l.x1, l.x0 + parts[0].length*size*0.5) + dx, y: l.y + dy }));
+      parts.slice(1).forEach((t, i) => out.push(Object.assign({}, l, { id: l.id + '#' + (i+1), ghost:true, editable:false, text:t, x0: l.x0 + dx, x1: l.x0 + dx + t.length*size*0.52, y: l.y + dy - (i+1)*lh })));
+    });
+    [...edits.values()].filter(e => e.add && e.page === p).forEach(e => {
+      const size = (e.style && e.style.size) || e.size0 || 10, lh = size * ((e.style && e.style.leading) || 1.25), dx = e.move ? e.move.dx : 0, dy = e.move ? e.move.dy : 0;
+      e.text.split('\n').forEach((t, i) => out.push({ id: i ? e.line + '#' + i : e.line, add:true, ghost: i > 0, editable:false, text:t, x0: e.x + dx, x1: e.x + dx + t.length*size*0.52, y: e.y + dy - i*lh, size, ascent:size*0.8, descent:size*0.22, font:null }));
+    });
+    return out;
+  }
+  // make room below a point by pushing the colliding lines down together (their own spacing is kept)
+  function pushDown(V, boundary, minD, xL, xR, startY, exclude){
+    const list = V.filter(l => l.text && !exclude.includes(l) && l.y < startY - 0.5 && l.x1 > xL - 1 && l.x0 < xR + 1).sort((a,b) => topOf(b) - topOf(a));
+    const moves = []; let D = 0, prevBot = null;
+    for(const l of list){
+      if(!D){ if(topOf(l) > boundary - 1.5){ D = Math.ceil(Math.max(topOf(l) - boundary + 1.5, minD)*100)/100; moves.push({ id:l.id, dy:-D }); prevBot = botOf(l); } else break; }
+      else if(topOf(l) > prevBot - D - 1.5){ moves.push({ id:l.id, dy:-D }); prevBot = Math.min(prevBot, botOf(l)); }
+      else break;
+    }
+    return moves;
+  }
+  async function companyProposal(doc, analyses, pages, edits){
+    const CO = getCo(), OURS = coAddr(), EM = emailRe(), MY = coEmails();
+    if(!CO.name) return null;
     for(let p = 0; p < Math.min(pages, 2); p++){
       const A = analyses[p] || (analyses[p] = await PMEdit.analyzePage(doc, p));
-      const all = A.lines.map(l => l.text).join('\n'), allN = norm(all), CL = coLines();
-      if(!CL.length) return null;
-      if(allN.includes(norm(CL[0]))) return null;            // full company name already there
+      const V = viewLines(A, p, edits);
+      const all = V.map(l => l.text).join('\n');
       if(!INV_RE.test(all)) continue;
-      // name present but incomplete (e.g. "Kodart Netvork" without "DOO"): fix that line in place
-      const cores = coCores();
-      const partial = A.lines.find(l => l.editable && cores.some(c => norm(l.text).includes(c)));
-      let fix = null;
-      if(partial){
+      const fullN = norm(CO.name), cores = coCores();
+      const full = V.find(l => l.text && norm(l.text).includes(fullN));
+      const partial = full ? null : V.find(l => (l.editable || l.add) && cores.some(c => norm(l.text).includes(c)));
+      // our email on a line of its own beats a line that merely contains it ("x@gmail.com's Organization")
+      const mails = V.filter(l => l.text && EM.test(l.text));
+      const email = mails.find(l => !PLACEHOLDER_RE.test(l.text) && l.text.trim().split(/\s+/).length <= 3) || mails.find(l => !PLACEHOLDER_RE.test(l.text)) || null;
+      const placeholder = !full && !partial ? V.find(l => l.editable && PLACEHOLDER_RE.test(l.text)) : null;
+      let nameLine = full || partial || placeholder, fix = null;
+      if(partial && !partial.add){
         const c = cores.find(c => norm(partial.text).includes(c));
-        const rx = new RegExp(c.split(' ').map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[\\s\\W]+') + '(?:[\\s,.]*(?:doo|dooel|d\\.o\\.o\\.?|ltd|llc))?', 'i');
-        const nt = partial.text.replace(rx, CL[0]);
+        const rx = new RegExp(c.split(' ').map(reEsc).join('[\\s\\W]+') + '(?:[\\s,.]*(?:doo|dooel|d\\.o\\.o\\.?|ltd|llc))?', 'i');
+        const nt = partial.text.replace(rx, CO.name);
         if(nt !== partial.text) fix = { id: partial.id, old: partial.text, text: nt };
       }
-      const em = partial || A.lines.find(l => l.editable && EMAIL_RE.test(l.text));
-      if(!em) continue;
-      const near = A.lines.filter(l => l.text && Math.abs(l.y - em.y) < em.size*7);
+      if(placeholder) fix = { id: placeholder.id, old: placeholder.text, text: CO.name };
+      const em = nameLine || email;
+      if(!em){ const lp = labelProposal(A, V, p, CO, OURS, MY, EM); if(lp) return lp; continue; }
+      // the customer block: lines aligned with ours, close together
+      const near = V.filter(l => l.text && Math.abs(l.y - em.y) < em.size*7);
       const nL = near.filter(l => Math.abs(l.x0 - em.x0) < 3).length, nR = near.filter(l => Math.abs(l.x1 - em.x1) < 3).length;
       const right = nR > nL && Math.abs(em.x0 - near.reduce((m,l)=>Math.min(m,l.x0), 1e9)) > 3;
       const aligned = l => right ? Math.abs(l.x1 - em.x1) < 3 : Math.abs(l.x0 - em.x0) < 3;
-      const sorted = A.lines.filter(l => l.text && aligned(l)).sort((a,b) => b.y - a.y);
+      const sorted = V.filter(l => l.text && aligned(l)).sort((a,b) => b.y - a.y);
       const i0 = sorted.indexOf(em); const block = [em];
       for(let i = i0-1; i >= 0 && sorted[i].y - block[0].y <= Math.max(block[0].size, sorted[i].size)*2.4; i--) block.unshift(sorted[i]);
       for(let i = i0+1; i < sorted.length && block[block.length-1].y - sorted[i].y <= Math.max(block[block.length-1].size, sorted[i].size)*2.4; i++) block.push(sorted[i]);
       // must be the customer block (Bill to / Customer / Клиент…), not our own sender block on invoices we issue
-      const BILL_RE = /(bill(ed)?\s*to|invoice\s*to|sold\s*to|ship\s*to|customer|client|recipient|клиент|купувач|примач|наручител|корисник)/i;
-      const rowLabel = A.lines.some(l => l.text && l.x1 <= block[0].x0 + 1 && Math.abs(l.y - block[0].y) < 2 && BILL_RE.test(l.text));
+      const rowLabel = V.some(l => l.text && l.x1 <= block[0].x0 + 1 && Math.abs(l.y - block[0].y) < 2 && BILL_RE.test(l.text));
       const above = sorted.filter(l => l.y > block[0].y && l.y - block[0].y < block[0].size*3.2);
-      if(!partial && !block.some(l => BILL_RE.test(l.text)) && !rowLabel && !above.some(l => BILL_RE.test(l.text))) continue;
-      // only the lines that aren't on the invoice yet (an address with Skopje + Macedonia counts as "Skopje, Macedonia")
-      const blockN = norm(block.map(l => l.text).join(' '));
-      const lines = CL.slice(fix ? 1 : 0).filter((x, i) => (!fix && i === 0) || !tokensIn(x, blockN));
-      if(!lines.length) return fix ? { page:p, fix, lines:[], moves:[], ref:em, tight:false } : null;
-      const last = em;   // company lines go right under our email; anything below makes room if needed
-      const upto = Math.max(1, block.indexOf(em)); const gaps = []; for(let i = 1; i <= upto && i < block.length; i++) gaps.push(block[i-1].y - block[i].y);
+      if(!(full || partial) && !block.some(l => BILL_RE.test(l.text)) && !rowLabel && !above.some(l => BILL_RE.test(l.text))) continue;
+      // line spacing of the original lines in the block
+      const orig = block.filter(l => !l.add && !l.ghost); const gaps = [];
+      for(let i = 1; i < orig.length; i++){ const g = orig[i-1].y - orig[i].y; if(g > 0) gaps.push(g); }
       gaps.sort((a,b)=>a-b);
-      let lh = gaps.length ? gaps[Math.floor(gaps.length/2)] : em.size*1.3; lh = Math.max(em.size*1.05, Math.min(em.size*1.8, lh));
-      const ei = block.indexOf(em);
-      let ref = em; for(let i = ei-1; i >= 0; i--){ if(!LABEL_RE.test(block[i].text.trim()) && block[i].editable && block[i].font && block[i].font.ok){ ref = block[i]; break; } }
-      const size = ref.size, W = Math.max(...lines.map(x => x.length)) * size * 0.56;
-      const xL = right ? em.x1 - W : Math.min(...block.map(l => l.x0)), xR = right ? em.x1 : xL + W;
-      const obstacles = A.lines.filter(l => l.text && l !== em && l.y < last.y - 0.5 && l.x1 > xL - 1 && l.x0 < xR + 1);
-      const topOf = l => l.y + (l.ascent || l.size*0.8), botOf = l => l.y - (l.descent || l.size*0.22);
-      const obstacleTop = obstacles.length ? Math.max(...obstacles.map(topOf)) : -1e9;
-      const fits = h => last.y - lines.length*h - size*0.25 >= obstacleTop + 1.5;
-      if(!fits(lh) && fits(Math.max(size*1.08, lh*0.85))) lh = Math.max(size*1.08, lh*0.85);
-      const moves = [];
-      if(!fits(lh)){
-        // push the lines below down together by one amount, so their own spacing stays the same
-        const boundary = last.y - lines.length*lh - size*0.25;
-        const list = obstacles.sort((a,b) => topOf(b) - topOf(a));
-        let D = 0, prevBot = null;
-        for(const l of list){
-          if(!D){ if(topOf(l) > boundary - 1.5){ D = Math.ceil(Math.max(topOf(l) - boundary + 1.5, lines.length*lh)*100)/100; moves.push({ id:l.id, dy:-D }); prevBot = botOf(l); } else break; }
-          else if(topOf(l) > prevBot - D - 1.5){ moves.push({ id:l.id, dy:-D }); prevBot = Math.min(prevBot, botOf(l)); }
-          else break;
+      let lh = gaps.length ? gaps[0] : em.size*1.3; lh = Math.max(em.size*1.05, Math.min(em.size*1.8, lh));
+      const blockN = norm(block.map(l => l.text).join(' '));
+      const needMail = MY.length && !MY.some(m => blockN.includes(norm(m))) && !block.some(l => EM.test(l.text) && !PLACEHOLDER_RE.test(l.text)) ? [MY[0]] : [];
+      const prop = { page:p, fix, lines:[], moves:[], addr:null, ref:em, lh, size:em.size, tight:false, anchor: right ? 'right' : 'left' };
+      let last = em;
+
+      if(nameLine){
+        // name is there (fully, partly, or as a stand-in): compare the address lines between the name and the email/VAT lines
+        const ni = block.indexOf(nameLine), theirs = [];
+        for(let i = ni + 1; i < block.length; i++){ const tx = block[i].text.trim(); if(NOT_ADDR_RE.test(tx) || PLACEHOLDER_RE.test(tx)) break; if(block[i].add || block[i].ghost) break; theirs.push(block[i]); }
+        if(OURS.length && theirs.length && !sameAddress(OURS, theirs.map(l => l.text))){
+          const k = theirs.length, m = OURS.length, edits2 = [], moves = [];
+          for(let i = 0; i < Math.min(k, m); i++) edits2.push({ id: theirs[i].id, old: theirs[i].text, text: (i === k-1 && m > k) ? OURS.slice(i).join('\n') : OURS[i] });
+          for(let i = m; i < k; i++) edits2.push({ id: theirs[i].id, old: theirs[i].text, text: '' });
+          const lastT = theirs[k-1], after = block.slice(block.indexOf(lastT) + 1);
+          if(m < k){ const up = Math.round((k - m)*lh*100)/100; after.forEach(l => moves.push({ id:l.id, dy: up })); }
+          if(m > k){
+            const D = Math.round((m - k)*lh*100)/100, W = Math.max(...OURS.map(x => x.length)) * em.size * 0.56;
+            const xL = right ? lastT.x1 - W : lastT.x0, xR = right ? lastT.x1 : lastT.x0 + W;
+            after.forEach(l => moves.push({ id:l.id, dy: -D }));
+            const blockBottom = Math.min(...[lastT, ...after].map(botOf)) - D;
+            pushDown(V, blockBottom, D, xL, xR, Math.min(...[lastT, ...after].map(l => l.y)), block).forEach(mv => moves.push(mv));
+          }
+          for(let i = edits2.length - 1; i >= 0; i--) if(edits2[i].text === edits2[i].old) edits2.splice(i, 1);
+          prop.addr = { edits: edits2, moves, theirs: theirs.map(l => l.text), ours: OURS, leading: Math.round(lh/lastT.size*1000)/1000 };
+        } else if(OURS.length && !theirs.length){
+          // no address under the name: add ours right under the name line
+          prop.lines = OURS.filter(x => !tokensIn(x, blockN));
         }
+        if(!prop.lines.length && !fix && !prop.addr) return null;
+        if(!prop.lines.length) return prop;
+        last = nameLine;
+      } else {
+        // no company name at all: name (+ address lines that aren't there yet) right under the email
+        prop.lines = [CO.name, ...OURS.filter(x => !tokensIn(x, blockN))];
       }
-      return { page:p, fix, x: right ? em.x1 : xL, y: last.y - lh, anchor: right ? 'right' : 'left', ref, size, lh, lines, moves, tight: moves.length > 0 };
+      // placement of the new lines under `last`, in line with the block's spacing; deleted lines are free space
+      let ref = last;
+      if(!nameLine || ref.add || ref.ghost || !ref.font){ const ei = block.indexOf(em); ref = em; for(let i = ei; i >= 0; i--){ const b = block[i]; if(!b.add && !b.ghost && !LABEL_RE.test(b.text.trim()) && b.font && b.font.ok){ ref = b; break; } } }
+      const size = ref.size, W = Math.max(...prop.lines.map(x => x.length)) * size * 0.56;
+      const xL = right ? last.x1 - W : Math.min(...block.map(l => l.x0)), xR = right ? last.x1 : xL + W;
+      const obstacles = V.filter(l => l.text && l !== last && l.y < last.y - 0.5 && l.x1 > xL - 1 && l.x0 < xR + 1);
+      const obstacleTop = obstacles.length ? Math.max(...obstacles.map(topOf)) : -1e9;
+      const fits = h => last.y - prop.lines.length*h - size*0.25 >= obstacleTop + 1.5;
+      if(!fits(lh)) prop.moves = pushDown(V, last.y - prop.lines.length*lh - size*0.25, prop.lines.length*lh, xL, xR, last.y, [last]);
+      return Object.assign(prop, { x: right ? last.x1 : xL, y: last.y - lh, ref, size, lh, tight: prop.moves.length > 0 });
     }
     return null;
   }
-  async function applyCompany(prop){
-    if(st.page !== prop.page){ st.page = prop.page; await showPage(); }
-    const p = prop.page, ref = prop.ref;
-    let n = 1; while(st.edits.has(key(p, 'a' + n))) n++;
-    const size0 = Math.round(ref.size*10)/10;
-    change(() => {
-      if(prop.fix){ const ln = st.analyses[p].lines[prop.fix.id]; st.edits.set(key(p, prop.fix.id), { page:p, line:prop.fix.id, text:prop.fix.text, anchor:(ln && ln.numeric ? 'right' : 'left'), old:prop.fix.old, company:true }); }
-      if(!prop.lines.length) return;
+  // Bill to block with neither our name nor our email left (e.g. deleted): rebuild it under the label, in order
+  function labelProposal(A, V, p, CO, OURS, MY, EM){
+    const label = V.find(l => l.text && BILL_RE.test(l.text) && l.text.trim().length < 40);
+    if(!label) return null;
+    // the original lines under the label (deleted ones included) give the column, spacing, font and colour
+    const col = l => Math.abs(l.x0 - label.x0) < 3;
+    const chain = (lines) => { const sorted = lines.filter(l => l.text && col(l) && l.y < label.y).sort((a,b) => b.y - a.y); const out = []; let prev = label;
+      for(const l of sorted){ if(prev.y - l.y <= Math.max(prev.size, l.size)*2.4){ out.push(l); prev = l; } else break; } return out; };
+    const origBlock = chain(A.lines), origIds = new Set(origBlock.map(l => l.id));
+    const nowBlock = V.filter(l => origIds.has(baseId(l.id)) || (l.add && col(l) && l.y < label.y && l.y > (origBlock.length ? origBlock[origBlock.length-1].y : label.y) - label.size*3));
+    const origN = norm(origBlock.map(l => l.text).join(' ')), nowN = norm(nowBlock.map(l => l.text).join(' '));
+    const ours = EM.test(origBlock.map(l => l.text).join(' ')) || coCores().some(c => origN.includes(c)) || OURS.some(x => tokensIn(x, nowN));
+    if(!ours) return null;
+    const origMail = (origBlock.find(l => EM.test(l.text) && !PLACEHOLDER_RE.test(l.text)) || {}).text;
+    const desired = [CO.name, ...OURS, ...(MY.length ? [MY[0]] : origMail ? [origMail.trim()] : [])];
+    // lines still there that are part of our details get rebuilt in order; anything else (VAT number…) stays
+    const removes = nowBlock.filter(l => !l.add && !l.ghost && desired.some(d => norm(d) === norm(l.text) || tokensIn(l.text, norm(d))));
+    const gaps = []; for(let i = 1; i < origBlock.length; i++){ const g = origBlock[i-1].y - origBlock[i].y; if(g > 0) gaps.push(g); }
+    gaps.sort((a,b)=>a-b);
+    const ref = origBlock.find(l => l.font && l.font.ok && !l.font.bold && !EM.test(l.text)) || origBlock.find(l => l.font && l.font.ok) || label;
+    let lh = gaps.length ? gaps[0] : ref.size*1.4; lh = Math.max(ref.size*1.05, Math.min(ref.size*1.8, lh));
+    const first = origBlock[0] ? label.y - origBlock[0].y : lh;
+    const x = origBlock[0] ? origBlock[0].x0 : label.x0, y = label.y - first, W = Math.max(...desired.map(d => d.length)) * ref.size * 0.56;
+    const rest = V.filter(l => !removes.includes(l));
+    const obstacles = rest.filter(l => l.text && l !== label && l.y < label.y - 0.5 && l.x1 > x - 1 && l.x0 < x + W + 1);
+    const obstacleTop = obstacles.length ? Math.max(...obstacles.map(topOf)) : -1e9;
+    const bottom = y - (desired.length - 1)*lh - ref.size*0.25;
+    const moves = bottom >= obstacleTop + 1.5 ? [] : pushDown(rest, bottom, 0, x, x + W, y + ref.size, [label]);
+    return { page:p, fix:null, lines: desired, removes: removes.map(l => ({ id:l.id, old:l.text })), moves, addr:null, ref, size:ref.size, lh, x, y, anchor:'left', tight: moves.length > 0, rebuilt:true };
+  }
+  // the edits a proposal turns into (used by the editor and by bulk fixing)
+  function companyEdits(prop, withAddr, colorHex, idFor){
+    const p = prop.page, ref = prop.ref, out = [], moves = [];
+    const lineEdit = (id, text, old, style) => out.push({ page:p, line:id, text, anchor:'left', old, style, company:true });
+    if(prop.fix) lineEdit(prop.fix.id, prop.fix.text, prop.fix.old);
+    (prop.removes || []).forEach(r => lineEdit(r.id, '', r.old));
+    if(prop.addr && withAddr){
+      prop.addr.edits.forEach(e => lineEdit(e.id, e.text, e.old, /\n/.test(e.text) && Math.abs(prop.addr.leading - 1.25) > 0.01 ? { leading: prop.addr.leading } : undefined));
+      prop.addr.moves.forEach(m => moves.push(m));
+    }
+    if(prop.lines.length){
       const style = Math.abs(prop.lh/ref.size - 1.25) > 0.01 ? { leading: Math.round(prop.lh/ref.size*1000)/1000 } : undefined;
-      st.edits.set(key(p, 'a'+n), { page:p, line:'a'+n, add:true, x: Math.round(prop.x*100)/100, y: Math.round(prop.y*100)/100, ref: ref.id, size0, color0: fillHex(ref),
+      out.push({ page:p, line:idFor, add:true, x: Math.round(prop.x*100)/100, y: Math.round(prop.y*100)/100, ref: ref.id, size0: Math.round(ref.size*10)/10, color0: colorHex,
         serif: !!(ref.font && ref.font.serif), bold0: !!(ref.font && ref.font.bold), italic0: !!(ref.font && ref.font.italic), text: prop.lines.join('\n'), anchor: prop.anchor, old:'', style, company:true });
-      prop.moves.forEach(m => addMove(p, m.id, 0, m.dy));
+      prop.moves.forEach(m => moves.push(m));
+    }
+    const mv = {}; moves.forEach(m => { const id = baseId(m.id); if(!(id in mv)) mv[id] = m.dy; });   // one move per line (lines of a multi-line block move together)
+    return { edits: out, moves: Object.entries(mv).map(([id, dy]) => ({ id: /^\d+$/.test(id) ? +id : id, dy })) };
+  }
+  async function applyCompany(prop, withAddr){
+    if(st.page !== prop.page){ st.page = prop.page; await showPage(); }
+    const p = prop.page;
+    let n = 1; while(st.edits.has(key(p, 'a' + n))) n++;
+    const { edits, moves } = companyEdits(prop, withAddr, prop.ref.add ? '#000000' : fillHex(prop.ref), 'a' + n);
+    change(() => {
+      edits.forEach(e => { const k = key(p, e.line), prev = st.edits.get(k); st.edits.set(k, prev && prev.add && !e.add ? Object.assign({}, prev, { text:e.text, company:true }) : Object.assign({}, prev && prev.move ? { move: prev.move } : {}, e)); });
+      moves.forEach(m => addMove(p, m.id, 0, m.dy));
     });
     renderOverlay(); renderChanges(); updateSave();
     await rebuild();
-    const r = st.report.get(key(p, 'a'+n)), rf = prop.fix && st.report.get(key(p, prop.fix.id));
-    showCoBar('done', prop, (r && r.mode === 'fallback') || (rf && rf.mode === 'fallback'));
+    const sub = edits.some(e => { const r = st.report.get(key(p, e.line)); return r && r.mode === 'fallback'; });
+    showCoBar('done', Object.assign({}, prop, { tight: moves.some(m => m.dy < 0) }), sub);
   }
+  // bulk: fix one PDF without opening it in the editor
+  async function autoFix(bytes, withAddr){
+    const doc = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption:true, updateMetadata:false });
+    const prop = await companyProposal(doc, {}, doc.getPageCount(), null);
+    if(!prop) return { changed:false };
+    const c = fillRgb(prop.ref.segs && prop.ref.segs[0] && prop.ref.segs[0].fill) || [0,0,0];
+    const { edits, moves } = companyEdits(prop, withAddr, toHex(c), 'a1');
+    const A = await PMEdit.analyzePage(doc, prop.page), byLine = new Map(edits.map(e => [e.line, e]));
+    moves.forEach(m => { const e = byLine.get(m.id); if(e) e.move = { dx:0, dy:m.dy }; else { const l = A.lines[m.id]; if(l) byLine.set(m.id, { page:prop.page, line:m.id, text:l.text, anchor:'left', move:{ dx:0, dy:m.dy } }); } });
+    const list = [...byLine.values()];
+    const rep = await PMEdit.applyEdits(doc, list.map(e => ({ page:e.page, line:e.line, text:e.text, anchor:e.anchor, style:e.style, move:e.move, add:e.add, x:e.x, y:e.y, ref:e.ref })), { fontkit: window.fontkit, fonts: fonts() });
+    return { changed:true, bytes: await doc.save(), fixedName: !!(prop.fix || prop.lines.includes(getCo().name)), fixedAddr: !!(withAddr && prop.addr) || prop.lines.some(x => OURSHas(x)), fallback: rep.some(r => r.mode === 'fallback') };
+  }
+  const OURSHas = x => coAddr().includes(x);
   function offerCompany(prop){ showCoBar('offer', prop); }
-  function showCoBar(state, prop, sub){
-    const bar = $('cobar'); bar.hidden = false; bar.textContent = '';
+  const hasCompanyEdits = () => [...st.edits.values()].some(e => e.company);
+  // check (again) whether the invoice needs our company details; manual = the "Check invoice" button
+  async function scanInvoice(manual){
+    if(!st.orig) return;
+    const prop = await companyProposal(st.analysisDoc, st.analyses, st.pages, st.edits).catch(e => { console.warn(e); return null; });
+    if(prop) offerCompany(prop);
+    else if(manual) showCoBar('info', null, false, t(hasCompanyEdits() ? 'coApplied' : 'coOk'));
+    else $('cobar').hidden = true;
+  }
+  function showCoBar(state, prop, sub, msg){
+    const bar = $('cobar'); bar.hidden = false; bar.textContent = ''; hideTip();
+    if(state === 'info'){
+      bar.innerHTML = '<b></b><div class="co-row"><button class="b ghost" data-a="ok">OK</button></div>';
+      bar.querySelector('b').textContent = msg; bar.querySelector('[data-a=ok]').onclick = () => { bar.hidden = true; };
+      return;
+    }
     if(state === 'offer'){
-      bar.innerHTML = '<b></b><div class="co-row"><textarea spellcheck="false" hidden></textarea></div><div class="co-row"><button class="b pri" data-a="add"></button><button class="b ghost" data-a="edit"></button><button class="b ghost" data-a="no"></button></div>';
-      const what = [];
-      if(prop.fix) what.push('„' + prop.fix.old + '“ → „' + prop.fix.text + '“');
-      if(prop.lines.length) what.push('+ ' + prop.lines.join(', '));
-      bar.querySelector('b').textContent = t(prop.fix ? 'coPartial' : 'coFound') + '  ' + what.join('  ·  ');
-      const ta = bar.querySelector('textarea'); ta.value = coText();
-      bar.querySelector('[data-a=add]').textContent = t('coAdd'); bar.querySelector('[data-a=edit]').textContent = t('coEdit'); bar.querySelector('[data-a=no]').textContent = t('coNo');
-      bar.querySelector('[data-a=edit]').onclick = () => { ta.hidden = !ta.hidden; if(!ta.hidden) ta.focus(); };
+      bar.innerHTML = '<b></b><div class="co-list"></div><label class="co-chk" hidden><input type="checkbox" checked> <span></span></label><div class="co-row"><button class="b pri" data-a="add"></button><button class="b ghost" data-a="edit"></button><button class="b ghost" data-a="no"></button></div>';
+      const list = bar.querySelector('.co-list'), item = s => { const d = document.createElement('div'); d.className = 'co-it'; d.textContent = s; list.appendChild(d); };
+      const nameIssue = !!prop.fix || prop.lines.includes(getCo().name);
+      bar.querySelector('b').textContent = t(prop.fix ? 'coPartial' : nameIssue ? 'coFound' : prop.addr ? 'coAddrOnly' : 'coAddrMissing');
+      if(prop.fix) item('„' + prop.fix.old + '“ → „' + prop.fix.text + '“');
+      if(prop.lines.length) item((prop.rebuilt ? '↻ ' : '+ ') + prop.lines.join(', '));
+      if(prop.addr){
+        const chk = bar.querySelector('.co-chk'); chk.hidden = !nameIssue;
+        chk.querySelector('span').textContent = t('coAddrToo');
+        item(t('coAddrDiff') + ': „' + prop.addr.theirs.join(', ') + '“ → „' + prop.addr.ours.join(', ') + '“');
+      }
+      bar.querySelector('[data-a=add]').textContent = t(nameIssue ? 'coAdd' : prop.addr ? 'coAddrBtn' : 'coAddrAdd'); bar.querySelector('[data-a=edit]').textContent = t('coEdit'); bar.querySelector('[data-a=no]').textContent = t('coNo');
+      bar.querySelector('[data-a=edit]').onclick = () => openCoForm();
       bar.querySelector('[data-a=no]').onclick = () => { bar.hidden = true; };
       bar.querySelector('[data-a=add]').onclick = async () => {
-        const v = ta.value.trim();
-        if(v && v !== coText()){ try{ localStorage.setItem('pm-company', v); }catch(e){} prop = await companyProposal(st.analysisDoc, st.analyses, st.pages); }
-        bar.hidden = true; if(prop) await applyCompany(prop);
+        const withAddr = !!prop.addr && (!nameIssue || bar.querySelector('.co-chk input').checked);
+        bar.hidden = true; await applyCompany(prop, withAddr);
       };
     } else {
       bar.innerHTML = '<b></b><span class="warnl" hidden data-w="tight"></span><span class="warnl" hidden data-w="font"></span><div class="co-row"><button class="b ghost" data-a="ok">OK</button></div>';
@@ -528,6 +708,21 @@ button,input,select{font:inherit;color:inherit}
       if(sub){ const w = bar.querySelector('[data-w=font]'); w.hidden = false; w.textContent = t('coFont'); }
       bar.querySelector('[data-a=ok]').onclick = () => { bar.hidden = true; };
     }
+  }
+  // "Company details" panel (side panel): name + address used for the invoice check
+  function renderCoForm(){
+    const f = $('coform'); if(!f) return; const c = getCo();
+    if(document.activeElement !== $('co-name')) $('co-name').value = c.name;
+    if(document.activeElement !== $('co-addr')) $('co-addr').value = c.address;
+    if(document.activeElement !== $('co-mail')) $('co-mail').value = c.email;
+    $('co-sum').textContent = c.name;
+  }
+  function openCoForm(){ const f = $('coform'); if(!f) return; f.open = true; f.scrollIntoView({ block:'nearest', behavior:'smooth' }); setTimeout(() => $('co-name').focus(), 150); }
+  async function saveCoForm(){
+    setCo($('co-name').value, $('co-addr').value, $('co-mail').value);
+    $('co-msg').textContent = t('coSaved'); setTimeout(() => { $('co-msg').textContent = ''; }, 3000);
+    if(window.PMEditor && PMEditor.onCompanyChange) PMEditor.onCompanyChange();
+    if(st.orig){ $('cobar').hidden = true; scanInvoice(false); }
   }
   function alertStart(msg){ const s = $('drop').querySelector('small'); s.textContent = msg; s.style.color = 'var(--danger)'; setTimeout(()=>{ s.style.color=''; s.textContent = t('dropS'); }, 5000); }
 
@@ -944,13 +1139,17 @@ button,input,select{font:inherit;color:inherit}
   const hist = { u:[], r:[], typing:null };
   const snap = () => JSON.stringify({ e:[...st.edits.entries()].map(([k, e]) => [k, Object.assign({}, e, { verified: undefined })]), f: st.fieldVals });
   function change(fn){
-    const s0 = snap(); fn();
+    const s0 = snap(), hadCo = hasCompanyEdits(); fn();
+    if(hadCo && !hasCompanyEdits()) setTimeout(() => scanInvoice(false), 0);
     if(snap() !== s0){ hist.u.push(s0); if(hist.u.length > 200) hist.u.shift(); hist.r.length = 0; hist.typing = null; }
     updateUndo();
   }
   function restoreSnap(s){
     const o = JSON.parse(s); closeEditor(true); st.sel.clear(); hist.typing = null;
+    const hadCo = hasCompanyEdits();
     st.edits = new Map(o.e); st.fieldVals = o.f || {};
+    if(hadCo && !hasCompanyEdits()) setTimeout(() => scanInvoice(false), 0);
+    else if(!hadCo && hasCompanyEdits() && !$('cobar').hidden && $('cobar').querySelector('[data-a=add]')) $('cobar').hidden = true;
     renderOverlay(); renderChanges(); updateSave(); updateUndo(); rebuild();
   }
   function undo(){ if(!hist.u.length) return; hist.r.push(snap()); restoreSnap(hist.u.pop()); }
@@ -1113,6 +1312,9 @@ button,input,select{font:inherit;color:inherit}
   const active = () => !!st.orig && (!EMBED || !$('root').hidden);
   $('ov').addEventListener('click', ev => { if(st.tool === 'text' && !st.showOrig){ const r = $('page').getBoundingClientRect(); ev.stopPropagation(); startAdd(ev.clientX - r.left, ev.clientY - r.top); } }, true);
   $('ov').addEventListener('dblclick', ev => { if(st.showOrig || st.tool || ev.target !== $('ov')) return; const r = $('page').getBoundingClientRect(); startAdd(ev.clientX - r.left, ev.clientY - r.top); });
+  $('co-save').onclick = saveCoForm;
+  $('scan').onclick = () => scanInvoice(true);
+  renderCoForm();
   $('addt').onclick = () => { if(st.showOrig) $('v-edit').click(); setTool(st.tool === 'text' ? null : 'text'); };
   $('apply').onclick = async () => {
     if(!window.PMEditor || !PMEditor.onApply) return;
@@ -1148,8 +1350,10 @@ button,input,select{font:inherit;color:inherit}
     // used by PDF Maestro: open bytes in the editor, hand the edited file back
     window.PMEditor = {
       open: (bytes, name, page, opts) => openBytes(bytes, name, page, opts),
-      detect: async (bytes) => { try{ const d = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption:true, updateMetadata:false }); const prop = await companyProposal(d, {}, d.getPageCount()); return prop ? { page: prop.page } : null; }catch(e){ return null; } },
-      onApply: null,
+      detect: async (bytes) => { try{ const d = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption:true, updateMetadata:false }); const prop = await companyProposal(d, {}, d.getPageCount(), null); return prop ? { page: prop.page, name: !!(prop.fix || prop.lines.includes(getCo().name)), addr: !!prop.addr } : null; }catch(e){ return null; } },
+      autoFix,
+      onApply: null, onCompanyChange: null,
+      getCompany: getCo, setCompany: setCo,
       build: async () => (await buildOutput()).bytes,
       save, setLang, hasChanges: () => st.edits.size > 0 || st.fields.some(f => (f.name in st.fieldVals) && st.fieldVals[f.name] !== f.value),
       close: () => { closeEditor(true); st.sel.clear(); hideTip(); },

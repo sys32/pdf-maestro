@@ -20,7 +20,9 @@ Split, merge, convert and edit PDFs, page by page. Everything runs on your own c
   - Bold, italic, underline, strikethrough, size, colour, alignment, plus advanced options (font, spacing, width, highlight, superscript/subscript, case, opacity)
   - New lines, new text boxes anywhere on the page, move text by dragging, delete text, undo/redo
   - Fill in PDF form fields
-  - Spots invoices billed to Kodart Netvork with missing or incomplete company details and offers to fix them in the invoice's own font
+  - Checks invoices billed to you for missing or incomplete company name, a different address or a missing email, and offers to fix them in the invoice's own font, keeping the layout aligned
+  - Company details (name, address, email) can be edited in the app; a "Check invoice" button re-runs the check at any time
+  - Bulk-fix several invoices at once and download the edited PDFs as one ZIP
 - Thumbnail and list views with adjustable thumbnail size
 - Removes hidden info (author, software, dates) from output files
 - Save to a folder you pick, or as one ZIP

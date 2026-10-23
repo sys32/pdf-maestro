@@ -185,6 +185,13 @@ button,input,select{font:inherit;color:inherit}
 .edt:hover{color:var(--accent)}
 @media (hover:none){.edt{opacity:1}}
 .x.ed:hover{background:var(--sunken);color:var(--fg)}
+.bulk{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:11px 14px;border-radius:12px;background:var(--accent-soft,#fdf0e7);border:1px solid rgba(234,106,31,.35);font-size:13px}
+.bulk b{font-weight:600;flex:1;min-width:220px}
+.bulk label{display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer}
+.bulk input{accent-color:var(--accent)}
+.bulk button{border:0;border-radius:9px;padding:8px 13px;font-weight:600;font-size:13px;cursor:pointer;background:var(--primary);color:var(--primary-ink)}
+.bulk button.sec{background:var(--surface);color:var(--fg);border:1px solid var(--line-strong)}
+.bulk button:disabled{opacity:.5;cursor:default}
 .co-note{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 10px 10px;padding:9px 12px;border-radius:10px;background:var(--accent-soft,#fdf0e7);border:1px solid rgba(234,106,31,.35);font-size:13px}
 .co-note span{flex:1;min-width:200px}
 .co-note button{border:0;border-radius:8px;padding:6px 11px;font-weight:600;font-size:12.5px;cursor:pointer;background:none;color:var(--muted)}
@@ -262,6 +269,9 @@ button,input,select{font:inherit;color:inherit}
 .opts[open] summary .chev{transform:rotate(90deg)}
 .opts summary small{color:var(--muted);font-weight:500;margin-left:auto;font-size:12px;text-align:right;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .opt-body{display:grid;gap:14px;padding-top:12px}
+#co-opts input,#co-opts textarea{border:1px solid var(--line-strong);border-radius:9px;padding:8px 10px;font:inherit;font-size:13px;background:var(--surface);color:var(--fg);width:100%;box-sizing:border-box}
+#co-opts textarea{resize:vertical;min-height:70px}
+.btn.sm{width:auto;padding:8px 16px;font-size:13px;flex:none}
 .field{display:grid;gap:6px}
 .field>span,.field>label{font-size:12px;font-weight:600;color:var(--muted)}
 .seg{display:grid;grid-template-columns:1fr 1fr;background:var(--sunken);border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px}
@@ -397,6 +407,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
         </div>
         <div class="tools"><button class="ghost" id="exp-all" data-t="expAll"></button><button class="ghost" id="col-all" data-t="colAll"></button><button class="ghost" id="clear-all" data-t="clearAll"></button></div>
       </div>
+      <div class="bulk" id="bulk" hidden></div>
       <div class="docs" id="docs"></div>
     </main>
 
@@ -458,6 +469,17 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
           <p class="note" id="merge-tip" data-t="mergeTip" hidden></p>
           <label class="switch" id="f-clean"><span><span data-t="clean"></span><small data-t="cleanSub"></small></span><input type="checkbox" id="clean" checked><i></i></label>
           <div class="field"><span data-t="youGet"></span><pre class="preview" id="preview"></pre></div>
+        </div>
+      </details>
+
+      <details class="opts" id="co-opts">
+        <summary><span data-t="coForm"></span><small id="co-sum"></small><span class="chev"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l4 4-4 4"/></svg></span></summary>
+        <div class="opt-body">
+          <label class="field" for="co-name"><span data-t="coName"></span><input type="text" id="co-name" spellcheck="false"></label>
+          <label class="field" for="co-addr"><span data-t="coAddrL"></span><textarea id="co-addr" rows="3" spellcheck="false"></textarea></label>
+          <label class="field" for="co-mail"><span data-t="coMail"></span><input type="text" id="co-mail" spellcheck="false" placeholder="name@codeart.mk"></label>
+          <div style="display:flex;align-items:center;gap:10px"><button class="btn sm" id="co-save" data-t="coSave"></button><span class="note" id="co-msg" style="color:var(--ok)"></span></div>
+          <p class="note" data-t="coFormNote"></p>
         </div>
       </details>
 
@@ -525,7 +547,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
   const STR = {
     en:{
       tagline:'Split, merge and convert PDFs, page by page', tabsAria:'What do you want to do?', langAria:'Language',
-      tSplit:'Split', tSplitSub:'Pages into PDFs', tMerge:'Merge', tMergeSub:'PDFs into one', tImages:'Images', tImagesSub:'Pages to JPG/PNG', tEdit:'Edit', tEditSub:'Change the text', editDoc:'Edit text', editPage:v=>'Edit text on page ' + v.n, vEdit:'Edit', btnEdit:v=>'Edit ' + v.name, editSum:'Edit text', editSub:'Click any text on a page to change it. Fonts and colours stay the same.', editNote:'You can also use the ✎ button on any document or page.', editPick:'Add a PDF to start editing', edited:'edited', editApplied:v=>'Changes applied to ' + v.name + '. Split, merge, images and print now use the edited version.', undo:'Undo', keepQ:'Keep your changes?', keepT:'You edited this document. Keep the changes in PDF Maestro, or discard them?', keepA:'Keep changes', keepB:'Discard', editOpenErr:'This PDF couldn’t be opened for editing.', coMissing:'Invoice billed to you with missing or incomplete company details (Kodart Netvork DOO).', coAddBtn:'Review and add', coIgnore:'Ignore',
+      tSplit:'Split', tSplitSub:'Pages into PDFs', tMerge:'Merge', tMergeSub:'PDFs into one', tImages:'Images', tImagesSub:'Pages to JPG/PNG', tEdit:'Edit', tEditSub:'Change the text', editDoc:'Edit text', editPage:v=>'Edit text on page ' + v.n, vEdit:'Edit', btnEdit:v=>'Edit ' + v.name, editSum:'Edit text', editSub:'Click any text on a page to change it. Fonts and colours stay the same.', editNote:'You can also use the ✎ button on any document or page.', editPick:'Add a PDF to start editing', edited:'edited', editApplied:v=>'Changes applied to ' + v.name + '. Split, merge, images and print now use the edited version.', undo:'Undo', keepQ:'Keep your changes?', keepT:'You edited this document. Keep the changes in PDF Maestro, or discard them?', keepA:'Keep changes', keepB:'Discard', editOpenErr:'This PDF couldn’t be opened for editing.', coMissing:v=>'Invoice billed to you: company details are missing, incomplete or have a different address (' + v.name + ').', coAddBtn:'Review and fix', coIgnore:'Ignore', bulkN:v=>v.n + ' invoices need your company details fixed (name, address or email).', bulkFix:v=>'Fix all ' + v.n, bulkAddr:'Change different addresses too', bulkWorking:v=>'Fixing ' + v.i + ' of ' + v.n + '…', bulkDone:v=>'Fixed ' + v.n + ' invoice' + (v.n===1?'':'s') + '. Check them, then download or use them in Split/Merge.', bulkZip:v=>'Download ' + v.n + ' edited PDFs (ZIP)', zipEdited:'Edited invoices', editedSuffix:' - edited', coMail:'Email (several allowed, separated by commas)', coForm:'Company details', coName:'Company name', coAddrL:'Address (one line per row)', coSave:'Save', coSaved:'Saved', coFormNote:'Invoices billed to you are checked against these details: missing or incomplete name, or a different address. Stored only in this browser.',
       dropStart:'Add PDFs to get started', dropMore:'Add more PDFs', dropSub:'Drag files here, or browse. You can add several at once.', browse:'Browse files',
       docs:'Documents', expAll:'Expand all', colAll:'Collapse all', clearAll:'Clear all', exportAria:'Export', restart:'Start over with new files',
       options:'Options', fChunk:'Split into', chunkSingle:'Single pages', chunkEvery:'Every N pages', perFile:'Pages per file',
@@ -577,7 +599,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
       tagline:'Делење, спојување и претворање PDF-документи, страница по страница', tabsAria:'Што сакате да направите?', langAria:'Јазик',
       tSplit:'Подели', tSplitSub:'Страници во PDF', tMerge:'Спои', tMergeSub:'Документи во еден', tImages:'Слики', tImagesSub:'Страници во JPG/PNG',
       tEdit:'Уреди', tEditSub:'Промени текст', editDoc:'Уреди текст', editPage:v=>'Уреди текст на страницата ' + v.n, vEdit:'Уреди', btnEdit:v=>'Уреди ' + v.name, editSum:'Уредување текст', editSub:'Кликнете на кој било текст на страницата за да го промените. Фонтовите и боите остануваат исти.', editNote:'Може да го користите и копчето ✎ на секој документ или страница.', editPick:'Додајте PDF за да започнете со уредување',
-      edited:'уреден', editApplied:v=>'Промените се зачувани во ' + v.name + '. Делењето, спојувањето, сликите и печатењето сега ја користат уредената верзија.', undo:'Врати', keepQ:'Да се задржат промените?', keepT:'Го уредивте овој документ. Да ги задржите промените во PDF Maestro или да ги отфрлите?', keepA:'Задржи промени', keepB:'Отфрли', editOpenErr:'Овој PDF не може да се отвори за уредување.', coMissing:'Фактура адресирана на вас со нецелосни или без податоци за фирмата (Kodart Netvork DOO).', coAddBtn:'Прегледај и додај', coIgnore:'Игнорирај',
+      edited:'уреден', editApplied:v=>'Промените се зачувани во ' + v.name + '. Делењето, спојувањето, сликите и печатењето сега ја користат уредената верзија.', undo:'Врати', keepQ:'Да се задржат промените?', keepT:'Го уредивте овој документ. Да ги задржите промените во PDF Maestro или да ги отфрлите?', keepA:'Задржи промени', keepB:'Отфрли', editOpenErr:'Овој PDF не може да се отвори за уредување.', coMissing:v=>'Фактура адресирана на вас: податоците за фирмата недостасуваат, се нецелосни или адресата е различна (' + v.name + ').', coAddBtn:'Прегледај и поправи', coIgnore:'Игнорирај', bulkN:v=>v.n + ' фактури треба да се поправат (име, адреса или е-пошта на фирмата).', bulkFix:v=>'Поправи ги сите ' + v.n, bulkAddr:'Смени ги и различните адреси', bulkWorking:v=>'Се поправа ' + v.i + ' од ' + v.n + '…', bulkDone:v=>'Поправени ' + v.n + (v.n%10===1&&v.n%100!==11?' фактура':' фактури') + '. Проверете ги, па преземете ги или користете ги во Подели/Спои.', bulkZip:v=>'Преземи ' + v.n + ' уредени PDF (ZIP)', zipEdited:'Уредени фактури', editedSuffix:' - уреден', coMail:'Е-пошта (може повеќе, одделени со запирка)', coForm:'Податоци за фирмата', coName:'Име на фирмата', coAddrL:'Адреса (секој ред посебно)', coSave:'Зачувај', coSaved:'Зачувано', coFormNote:'Фактурите адресирани на вас се проверуваат според овие податоци: име што недостасува или е нецелосно, или различна адреса. Се чува само во овој прелистувач.',
       dropStart:'Додајте PDF-документи за да започнете', dropMore:'Додајте уште PDF-документи', dropSub:'Повлечете ги фајловите тука или изберете ги. Може да додадете повеќе одеднаш.', browse:'Изберете фајлови',
       docs:'Документи', expAll:'Отвори ги сите', colAll:'Затвори ги сите', clearAll:'Отстрани ги сите', exportAria:'Извоз', restart:'Почнете од почеток со нови фајлови',
       options:'Опции', fChunk:'Начин на делење', chunkSingle:'Поединечни страници', chunkEvery:'На секои N страници', perFile:'Страници по фајл',
@@ -784,7 +806,46 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
     $('list-bar').hidden = !has;
     $('list-title').textContent = t('docs') + ' ';
     const c = document.createElement('span'); c.textContent = '· ' + items.length; $('list-title').appendChild(c);
+    renderBulk();
     updateSide();
+  }
+  // several invoices at once: fix them all, then download the edited ones together
+  let bulkBusy = false;
+  function renderBulk(){
+    const bar = $('bulk'), flagged = items.filter(i => i.coMissing && !i.coIgnored && !i.error), edited = items.filter(i => i.edited && !i.error);
+    const showFix = flagged.length >= 2, showZip = edited.length >= 2;
+    bar.hidden = !(showFix || showZip || bulkBusy); if(bar.hidden || bulkBusy) return;
+    bar.textContent = '';
+    if(showFix){
+      const b = document.createElement('b'); b.textContent = t('bulkN', { n: flagged.length }); bar.appendChild(b);
+      if(flagged.some(i => i.coMissing.addr)){ const l = document.createElement('label'); l.innerHTML = '<input type="checkbox" checked><span></span>'; l.querySelector('span').textContent = t('bulkAddr'); bar.appendChild(l); }
+      const f = document.createElement('button'); f.textContent = t('bulkFix', { n: flagged.length }); f.onclick = ()=> bulkFix(flagged, !bar.querySelector('label input') || bar.querySelector('label input').checked); bar.appendChild(f);
+    } else { const b = document.createElement('b'); b.textContent = t('bulkDone', { n: edited.length }); bar.appendChild(b); }
+    if(showZip){ const z = document.createElement('button'); z.className = showFix ? 'sec' : ''; z.textContent = t('bulkZip', { n: edited.length }); z.onclick = ()=> zipEdited(edited); bar.appendChild(z); }
+  }
+  async function bulkFix(list, withAddr){
+    if(bulkBusy || !window.PMEditor) return;
+    bulkBusy = true; const bar = $('bulk'); bar.hidden = false; bar.innerHTML = '<b></b>'; const msg = bar.querySelector('b');
+    const undo = []; let n = 0;
+    for(let i = 0; i < list.length; i++){
+      const it = list[i]; msg.textContent = t('bulkWorking', { i: i+1, n: list.length });
+      try{
+        const r = await PMEditor.autoFix(it.bytes.slice(), withAddr);
+        if(r.changed){ undo.push([it, it.bytes, !!it.edited, it.coMissing]); applyEdited(it, r.bytes, true); n++; }
+      }catch(e){ console.error(e); }
+    }
+    bulkBusy = false; render();
+    showToast(t('bulkDone', { n }), ()=>{ undo.forEach(([it, b, ed, co]) => { it.bytes = b; it.edited = ed; it.coMissing = co; if(it.pjs){ it.pjs.then(d=>d.destroy()).catch(()=>{}); it.pjs = null; } it.pages.forEach(p=>{ p.thumb = null; p.pending = false; p.fail = false; }); }); render(); });
+  }
+  async function zipEdited(list){
+    const zip = new JSZip(), used = new Set();
+    list.forEach(it => { let nm = stem(it.name) + t('editedSuffix') + '.pdf', k = 2; while(used.has(nm)) nm = stem(it.name) + t('editedSuffix') + ' (' + (k++) + ').pdf'; used.add(nm); zip.file(nm, it.bytes); });
+    const blob = await zip.generateAsync({ type:'blob' }), name = t('zipEdited') + '.zip';
+    try{
+      const h = await askFile(name, 'zip');
+      if(h === null) return;
+      if(h) await writeHandle(h, blob); else await download(await downloader(), name, blob);
+    }catch(e){ setStatus(t('saveStopped', { msg: errMsg(e) }), 'err'); }
   }
 
   function docCard(it){
@@ -826,7 +887,7 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
     if(it.coMissing && !it.coIgnored && !it.error){
       const n = document.createElement('div'); n.className = 'co-note';
       n.innerHTML = '<span></span><button class="go"></button><button class="ig"></button>';
-      n.querySelector('span').textContent = t('coMissing');
+      n.querySelector('span').textContent = t('coMissing', { name: window.PMEditor ? PMEditor.getCompany().name : '' });
       n.querySelector('.go').textContent = t('coAddBtn'); n.querySelector('.ig').textContent = t('coIgnore');
       n.querySelector('.go').onclick = ()=> openEditor(it, it.coMissing.page || 0, { company:'auto' });
       n.querySelector('.ig').onclick = ()=>{ it.coIgnored = true; swap(card, docCard(it)); };
@@ -1480,12 +1541,35 @@ select,input[type=number]{font-size:13.5px;padding:8px 10px;border:1px solid var
   $('clear-all').addEventListener('click', ()=>{ items.slice().forEach(removeItem); render(); });
   $('restart').addEventListener('click', ()=>{ items.slice().forEach(removeItem); setStatus(''); render(); input.click(); });
 
+  // company details form (shared with the editor through this browser's storage)
+  function renderCoForm(){
+    $('co-opts').hidden = !window.PMEditor; if(!window.PMEditor) return;
+    const c = PMEditor.getCompany();
+    if(document.activeElement !== $('co-name')) $('co-name').value = c.name;
+    if(document.activeElement !== $('co-addr')) $('co-addr').value = c.address;
+    if(document.activeElement !== $('co-mail')) $('co-mail').value = c.email || '';
+    $('co-sum').textContent = c.name;
+  }
+  function recheckCompany(){
+    if(!window.PMEditor) return;
+    items.filter(i => !i.error && i.pages && i.pages.length).forEach(async it => {
+      const r = await PMEditor.detect(it.bytes.slice()); if(!items.includes(it)) return;
+      const had = !!it.coMissing; it.coMissing = r; if(had !== !!r) render();
+    });
+  }
+  $('co-save').addEventListener('click', ()=>{
+    PMEditor.setCompany($('co-name').value, $('co-addr').value, $('co-mail').value); renderCoForm();
+    $('co-msg').textContent = t('coSaved'); setTimeout(()=>{ $('co-msg').textContent = ''; }, 2500);
+    items.forEach(i => { i.coIgnored = false; }); recheckCompany();
+  });
   if($('el-root')){
     $('el-done').addEventListener('click', editorDone);
     $('el-back').addEventListener('click', editorBack);
     document.addEventListener('keydown', e=>{ if(EDIT && e.key==='Escape' && !e.defaultPrevented && $('modal').hidden && !document.querySelector('#el-root .ed-box') && !(window.PMEditor && PMEditor.state.sel.size)) editorBack(); });
   }
   window.__maestro = { items: () => items, openEditor };
+  const hookEditor = ()=>{ renderCoForm(); if(window.PMEditor) PMEditor.onCompanyChange = ()=>{ renderCoForm(); recheckCompany(); }; };
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hookEditor); else setTimeout(hookEditor, 0);
   applyStatic();
   applyView();
   render();
